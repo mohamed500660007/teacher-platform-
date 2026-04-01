@@ -1,0 +1,2803 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Educational Platform Landing Page</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ["Cairo", "sans-serif"],
+                        body: ["Cairo", "sans-serif"],
+                    },
+                    colors: {
+                        primary: "#0EA5E9", // Sky Blue
+                        secondary: "#a66a1f", // Yellow
+                        "primary-dark": "#0284C7",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1E293B",
+                        "text-light": "#334155",
+                        "text-dark": "#E2E8F0",
+                        "accent-pink": "#F43F5E",
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .curve-decoration {
+            position: absolute;
+            width: 100%;
+            height: 50px;
+            bottom: -25px;
+            z-index: 10;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 50;
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stagger-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Button Enhancements */
+        .btn-enhanced {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-enhanced:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 8px -1px rgba(28, 67, 150, 0.4);
+        }
+
+        .btn-enhanced:active {
+            transform: scale(0.98);
+        }
+
+        .btn-enhanced::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-enhanced:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Card Enhancements */
+        .card-enhanced {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .card-enhanced:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Navbar Enhancement */
+        .navbar-scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .navbar-scrolled {
+            background-color: rgba(10, 30, 62, 0.95);
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Counter Animation */
+        .counter {
+            display: inline-block;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            color: #1e293b;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateX(400px);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 350px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: #2563eb;
+            border-radius: 0 0 12px 12px;
+            animation: progress 3s linear;
+        }
+
+        @keyframes progress {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+
+        /* Active Navigation Link */
+        .nav-link-active {
+            color: #2563eb !important;
+            position: relative;
+        }
+
+        .nav-link-active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background: #2563eb;
+            border-radius: 1px;
+        }
+
+        /* Enhanced scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .line-animate {
+            height: 4px;
+            width: 0;
+            background-color: #546275;
+            /* أو text-primary */
+            border-radius: 9999px;
+            transition: width 1s cubic-bezier(0.22, 2, 0.0, 4);
+        }
+
+        .line-animate.active {
+            width: 10rem;
+            /* نفس w-24 */
+        }
+
+        .filter-container {
+            display: flex;
+            align-items: center;
+            background: #f3f4f6;
+            padding: 6px;
+            border-radius: 16px;
+            gap: 10px;
+        }
+
+        .dark .filter-container {
+            background: #1f2937;
+        }
+
+        .filter-group {
+            position: relative;
+            display: flex;
+            background: transparent;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .filter-btn {
+            position: relative;
+            padding: 8px 18px;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 2;
+            transition: color 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            opacity: 0.8;
+        }
+
+        .filter-btn.active {
+            color: white;
+        }
+
+        .indicator {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 0;
+            background: #2563eb;
+            border-radius: 12px;
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 1;
+        }
+
+        .divider {
+            width: 1px;
+            height: 24px;
+            background: #d1d5db;
+        }
+
+        .dark .divider {
+            background: #374151;
+        }
+
+        .cursor {
+            display: inline-block;
+            margin-right: 4px;
+            animation: blink 1s infinite;
+            transition: opacity 0.4s ease;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50%,
+            100% {
+                opacity: 1;
+            }
+
+            25%,
+            75% {
+                opacity: 0;
+            }
+        }
+
+        .typewriter.finished .cursor {
+            opacity: 0;
+        }
+
+        .typewriter {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .typewriter.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .card img {
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card h3,
+        .card p {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .card:hover h3,
+        .card:hover p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card h3,
+        .card p {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .card:hover h3,
+        .card:hover p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Cursor Spotlight Effect */
+        .card-spotlight {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-spotlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle 150px at var(--mouse-x) var(--mouse-y),
+                    rgba(37, 99, 235, 0.15) 0%,
+                    rgba(37, 99, 235, 0.05) 20%,
+                    transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .dark .card-spotlight::before {
+            background: radial-gradient(circle 150px at var(--mouse-x) var(--mouse-y),
+                    rgba(59, 130, 246, 0.2) 0%,
+                    rgba(59, 130, 246, 0.08) 20%,
+                    transparent 40%);
+        }
+
+        .card-spotlight:hover::before {
+            opacity: 1;
+        }
+
+        .card-spotlight::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid rgba(37, 99, 235, 0);
+            transition: border-color 0.3s ease;
+            pointer-events: none;
+            z-index: 2;
+            border-radius: inherit;
+        }
+
+        .card-spotlight:hover::after {
+            border-color: rgba(37, 99, 235, 0.3);
+        }
+
+        .dark .card-spotlight:hover::after {
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Neon Cursor Styles */
+        .neon-cursor-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-main {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgb(236, 101, 23);
+            border: 2px solid rgb(236, 101, 23);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: border-color 0.3s ease, border-width 0.3s ease;
+        }
+
+        .cursor-trail {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgb(236, 101, 23);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            opacity: 0.4;
+            transition: border-color 0.3s ease, border-width 0.3s ease;
+        }
+
+        .cursor-glow {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(236, 101, 23, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            filter: blur(2px);
+        }
+
+        .cursor-main.hovering,
+        .cursor-trail.hovering {
+            border-color: rgb(255, 150, 50);
+            border-width: 3px;
+        }
+
+        .cursor-glow.hovering {
+            background: radial-gradient(circle, rgba(255, 150, 50, 0.8) 0%, transparent 70%);
+        }
+
+        /* Hide default cursor on hover */
+        body {
+            cursor: auto;
+        }
+
+        a,
+        button,
+        input,
+        [data-hover="true"] {
+            cursor: pointer !important;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card h3,
+        .card p {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .card:hover h3,
+        .card:hover p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Simple Educational Loader Styles */
+        .loading-spinner {
+            display: flex;
+            gap: 4px;
+        }
+
+        .spinner-circle {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0EA5E9, #a66a1f);
+            animation: spinnerPulse 1.4s ease-in-out infinite both;
+        }
+
+        .spinner-circle:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .spinner-circle:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        .spinner-circle:nth-child(3) {
+            animation-delay: 0;
+        }
+
+        @keyframes spinnerPulse {
+
+            0%,
+            80%,
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+
+            40% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark transition-colors duration-300">
+    <!-- Educational Loader -->
+    <div id="eduLoader" class="fixed inset-0 bg-white dark:bg-gray-900 z-50 flex items-center justify-center">
+        <div class="text-center">
+            <!-- Simple Logo -->
+            <div class="mb-8">
+                <div
+                    class="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <span class="material-icons-round text-3xl text-white">school</span>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">منصة التفوق</h2>
+            </div>
+
+            <!-- Simple Loading Animation -->
+            <div class="flex justify-center mb-4">
+                <div class="loading-spinner">
+                    <div class="spinner-circle"></div>
+                    <div class="spinner-circle"></div>
+                    <div class="spinner-circle"></div>
+                </div>
+            </div>
+
+            <!-- Loading Text -->
+            <p class="text-gray-600 dark:text-gray-400 text-sm">جاري التحميل...</p>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden initially) -->
+    <div id="mainContent" style="display: none;">
+        <!-- Neon Cursor Container -->
+        <div class="neon-cursor-container">
+            <div class="cursor-main"></div>
+            <div class="cursor-trail"></div>
+            <div class="cursor-glow"></div>
+        </div>
+
+        <nav
+            class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-lg border-b border-gray-100/50 dark:border-gray-800/50">
+            <div class="container mx-auto px-4 h-20 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-2xl opacity-10 group-hover:opacity-20 transition-opacity blur-xl">
+                        </div>
+                        <div
+                            class="relative text-3xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent flex items-center gap-3">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/25 transform group-hover:scale-110 transition-transform">
+                                <span class="material-icons-round text-white text-2xl">school</span>
+                            </div>
+                            <span class="tracking-tight">التفوق</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden lg:flex items-center gap-8">
+                    <a class="relative group font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300"
+                        href="#">
+                        <span class="relative z-10">الرئيسية</span>
+                        <div
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300">
+                        </div>
+                    </a>
+                    <a class="relative group font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300"
+                        href="#">
+                        <span class="relative z-10">الكورسات</span>
+                        <div
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300">
+                        </div>
+                    </a>
+                    <a class="relative group font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300"
+                        href="#">
+                        <span class="relative z-10">المدرسين</span>
+                        <div
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300">
+                        </div>
+                    </a>
+                    <a class="relative group font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300"
+                        href="#">
+                        <span class="relative z-10">تواصل معنا</span>
+                        <div
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300">
+                        </div>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button
+                        class="relative group bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary/80 text-white px-8 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transform hover:scale-105 transition-all duration-300">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <span class="relative flex items-center gap-2">
+                            <span class="material-icons-round text-base">login</span>
+                            <span>تسجيل الدخول</span>
+                        </span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button
+                        class="md:hidden relative group p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <span class="material-icons-round text-2xl text-gray-700 dark:text-gray-300">menu</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div
+                class="md:hidden absolute top-full left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 shadow-lg transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300">
+                <div class="container mx-auto px-4 py-6 space-y-4">
+                    <a class="block font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors py-2"
+                        href="#">الرئيسية</a>
+                    <a class="block font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors py-2"
+                        href="#">الكورسات</a>
+                    <a class="block font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors py-2"
+                        href="#">المدرسين</a>
+                    <a class="block font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors py-2"
+                        href="#">تواصل معنا</a>
+                </div>
+            </div>
+        </nav>
+        <header class="relative pt-10 pb-20 overflow-hidden">
+            <div class="container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
+                <div class="text-center md:text-right order-2 md:order-1 space-y-6">
+                    <h1 class="text-4xl md:text-6xl font-black text-primary leading-tight">
+                        منصة <span class="text-gray-600 dark:text-gray-400">التفوق</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 font-bold">
+                        منصة متكاملة بها كل ما يحتاجه الطالب ليتفوق
+                    </p>
+                    <div class="pt-4 flex justify-center md:justify-start gap-4">
+                        <button
+                            class="bg-white border border-gray-300 dark:border-gray-700 text-gray-800 hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white hover:bg-gray-200 text-gray-900 px-8 py-3 rounded-full font-bold text-lg shadow-sm transform hover:-translate-y-1 transition-all">
+                            ابدأ رحلتك
+                        </button>
+                        <button
+                            class="border-2 border-primary text-primary dark:text-white dark:border-white px-8 py-3 rounded-full font-bold text-lg hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-primary transition-all">
+                            اعرف المزيد
+                        </button>
+                    </div>
+                </div>
+                <div class="relative order-1 md:order-2 flex justify-center">
+                    <div class="relative">
+                        <!-- Main Image -->
+                        <img alt="Happy Student"
+                            class="relative z-10 w-full max-w-md object-contain rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800"
+                            src="sucess.jpg" />
+
+                        <!-- Floating Elements -->
+                        <div
+                            class="absolute -top-3 -right-3 bg-white dark:bg-surface-dark rounded-xl shadow-md p-2 animate-bounce">
+                            <span class="material-icons-round text-primary text-lg">school</span>
+                        </div>
+                        <div
+                            class="absolute -bottom-3 -left-3 bg-primary text-white rounded-xl shadow-md p-2 animate-pulse">
+                            <span class="material-icons-round text-lg">emoji_events</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section class="py-16 bg-white dark:bg-surface-dark relative">
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="text-center mb-10">
+                    <div class="inline-block relative mb-4">
+                        <h2 class="text-3xl md:text-4xl font-black text-primary">
+                            <span class="text-secondary">اختر</span> المدرسين
+                        </h2>
+                        <div
+                            class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full">
+                        </div>
+                    </div>
+
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mt-4 max-w-xl mx-auto">
+                        مناهج متكاملة تغطي جميع المراحل الدراسية مع أفضل المدرسين المتخصصين
+                    </p>
+                </div>
+                <div class="flex justify-center mb-10">
+                    <div class="filter-container">
+                        <div class="filter-group" data-group="grade">
+                            <button class="filter-btn active">الصف الثالث الثانوي</button>
+                            <button class="filter-btn">الصف الثاني الثانوي</button>
+                            <span class="indicator"></span>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="filter-group" data-group="track">
+                            <button class="filter-btn active">علمي علوم</button>
+                            <button class="filter-btn">أدبي</button>
+                            <span class="indicator"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div
+                        class="card group relative bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+                        <div
+                            class="relative h-48 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 overflow-hidden">
+                            <div class="absolute inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm"></div>
+                            <img alt="Teacher" class="absolute inset-0 w-full h-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZRHUKImXv-ZVz-D1UHSl_fOcYULDVMpUDNuv0zL7NeQMrUG0g-cSIFdbTU4gwV9_e0UAUZ2biEO59tIaNgazumCSzFGUbYMTKs2p4-aP39fw9MH9oRwptakBZRtR4KqetfYR7hSXFZH7GVIa9sQwVURMLhwPT_XsvHt2Hfz2pJtg04NrvwZSQNqfTe8rBcMXz2a6rKsVJtPTVIkCiFbY6qWutViXE79ppCq3iqozq0kWLJaaV-US9H1xtPlUMJ__3XLjBqZUdVfWi" />
+                            <div
+                                class="absolute top-3 right-3 bg-white dark:bg-gray-800 px-2 py-1 rounded-full shadow-md">
+                                <span class="text-xs font-semibold text-primary">مميز</span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">محمد صالح</h3>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">أستاذ اللغة العربية</p>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-yellow-500 text-xs">star</span>
+                                    <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">4.9</span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-sm">people</span>
+                                    <span>250</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-sm">book</span>
+                                    <span>15</span>
+                                </div>
+                            </div>
+                            <button class="w-full bg-primary hover:bg-secondary
+           text-white font-semibold text-sm
+           py-2 rounded-lg
+           transition-colors duration-300">
+                                عرض الكورسات
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="card group relative bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+                        <div
+                            class="relative h-48 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 overflow-hidden">
+                            <div class="absolute inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm"></div>
+                            <img alt="Teacher" class="absolute inset-0 w-full h-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRY8RF4JZFx1DPBDKq9P3yD95GJgxFw1KulCuih63KDj0W9s0zsDkxh_no1H1WqGrEgniCiBRW1Wkfiir0mcMQY9tlg2cDQ79ZObZSYi-P33hJYG6rTUg9l78LQ6qQrIpEDGwR1rji05nGItocqIZ_r_M2Ul01bfB80R4FE9rQ-5LgqPuaYwcTtk-QBh3VGddJDcw1MUYubj8Giirk6HJ8SV3QrxlZIypYW0f-fygGEmxLZSTwqGiO79QLqp3tJilQSbVUjaMiEgvC" />
+                            <div
+                                class="absolute top-3 right-3 bg-white dark:bg-gray-800 px-2 py-1 rounded-full shadow-md">
+                                <span class="text-xs font-semibold text-primary">مميز</span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">د/ محمد أيمن</h3>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">أستاذ الأحياء</p>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-yellow-500 text-xs">star</span>
+                                    <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">4.8</span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-sm">people</span>
+                                    <span>180</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-sm">book</span>
+                                    <span>12</span>
+                                </div>
+                            </div>
+                           <button class="w-full bg-primary hover:bg-secondary
+           text-white font-semibold text-sm
+           py-2 rounded-lg
+           transition-colors duration-300">
+                                عرض الكورسات
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="card group relative bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+                        <div
+                            class="relative h-48 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 overflow-hidden">
+                            <div class="absolute inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm"></div>
+                            <img alt="Teacher" class="absolute inset-0 w-full h-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaZbKXQq52C1mvaGZfHMyc1jm57p2DAIttr6iL4ETfakvrLPfoSTHRVdwlus1QjoQ7qDvSF8aTsdmnmA5I8e8RHn9wkjy1vSO2K_pGF4f2aT-aaU_qpPFE2a62-WdsbHmebLStCHFp-YDpbP_iODtxkiNkH3jDIST-_HqjbNmMi5-XQcHUrZhNor9254UFfyivHwdaxLV5TN3Gv7KwIeYIhosK9nSBS1JCMLY51VybKKQJxKmoUIAnVVYbBYA8JIxmJVEuE8EgTvak" />
+                            <div
+                                class="absolute top-3 right-3 bg-white dark:bg-gray-800 px-2 py-1 rounded-full shadow-md">
+                                <span class="text-xs font-semibold text-primary">مميز</span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Abdelhamid</h3>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">English Teacher</p>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-yellow-500 text-xs">star</span>
+                                    <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">4.7</span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-sm">people</span>
+                                    <span>320</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-sm">book</span>
+                                    <span>20</span>
+                                </div>
+                            </div>
+                           <button class="w-full bg-primary hover:bg-secondary
+           text-white font-semibold text-sm
+           py-2 rounded-lg
+           transition-colors duration-300">
+                                عرض الكورسات
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="card group relative bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+                        <div
+                            class="relative h-48 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 overflow-hidden">
+                            <div class="absolute inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm"></div>
+                            <img alt="Teacher" class="absolute inset-0 w-full h-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaZbKXQq52C1mvaGZfHMyc1jm57p2DAIttr6iL4ETfakvrLPfoSTHRVdwlus1QjoQ7qDvSF8aTsdmnmA5I8e8RHn9wkjy1vSO2K_pGF4f2aT-aaU_qpPFE2a62-WdsbHmebLStCHFp-YDpbP_iODtxkiNkH3jDIST-_HqjbNmMi5-XQcHUrZhNor9254UFfyivHwdaxLV5TN3Gv7KwIeYIhosK9nSBS1JCMLY51VybKKQJxKmoUIAnVVYbBYA8JIxmJVEuE8EgTvak" />
+                            <div
+                                class="absolute top-3 right-3 bg-white dark:bg-gray-800 px-2 py-1 rounded-full shadow-md">
+                                <span class="text-xs font-semibold text-primary">مميز</span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">أحمد محمد</h3>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">أستاذ الرياضيات</p>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-yellow-500 text-xs">star</span>
+                                    <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">4.9</span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-sm">people</span>
+                                    <span>280</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-icons-round text-sm">book</span>
+                                    <span>18</span>
+                                </div>
+                            </div>
+                             <button class="w-full bg-primary hover:bg-secondary
+           text-white font-semibold text-sm
+           py-2 rounded-lg
+           transition-colors duration-300">
+                                عرض الكورسات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-16 text-center">
+                    <div
+                        class="inline-flex items-center gap-3 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-md shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 cursor-pointer">
+                        <span class="material-icons-round">rocket_launch</span>
+                        <span class="font-bold text-lg"> عرض المزيد من المدرسين </span>
+                        <span class="material-icons-round">arrow_back</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section
+            class="py-16 bg-gradient-to-br from-surface-light to-white dark:from-surface-dark dark:to-background-dark relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-primary rounded-full blur-3xl animate-pulse"></div>
+                <div
+                    class="absolute bottom-0 left-0 w-32 h-32 bg-secondary rounded-full blur-2xl animate-pulse delay-1000">
+                </div>
+            </div>
+
+            <div class="container mx-auto px-4 relative z-10">
+                <!-- Section Header -->
+                <div class="text-center mb-12">
+                    <div class="inline-block relative mb-4">
+                        <h2 class="text-3xl md:text-4xl font-black text-primary">
+                            <span class="text-secondary">كورسات</span> مميزة
+                        </h2>
+                        <div
+                            class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full">
+                        </div>
+                    </div>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                        اكتشف أفضل الكورسات المعتمدة من مدرسين متخصصين وابدأ رحلتك التعليمية الآن
+                    </p>
+                </div>
+
+                <!-- Slider Container -->
+                <div class="relative max-w-7xl mx-auto">
+                    <!-- Navigation Buttons -->
+                    <button id="prevBtn"
+                        class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-20 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
+                        <span class="material-icons-round text-primary">arrow_back</span>
+                    </button>
+                    <button id="nextBtn"
+                        class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-20 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
+                        <span class="material-icons-round text-primary">arrow_forward</span>
+                    </button>
+
+                    <!-- Slider Track -->
+                    <div class="overflow-hidden rounded-2xl">
+                        <div id="sliderTrack" class="flex transition-transform duration-500 ease-in-out gap-6">
+                            <!-- Course Card 1 -->
+                            <div
+                                class="min-w-[320px] bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                                <div
+                                    class="relative h-48 bg-gradient-to-br from-primary to-primary-dark overflow-hidden">
+                                    <div class="absolute inset-0 bg-black/20"></div>
+                                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=200&fit=crop"
+                                        alt="Course" class="w-full h-full object-cover opacity-70">
+                                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full">
+                                        <span class="text-xs font-semibold text-primary">رياضيات</span>
+                                    </div>
+                                    <div
+                                        class="absolute top-4 right-4 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                                        HOT
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">الرياضيات المتقدمة
+                                    </h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">مستوى متقدم في الرياضيات مع
+                                        حلول للمسائل المعقدة</p>
+
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div class="flex items-center">
+                                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face"
+                                                alt="Teacher" class="w-8 h-8 rounded-full">
+                                            <span class="text-sm text-gray-700 dark:text-gray-300 mr-2">أ. أحمد
+                                                محمد</span>
+                                        </div>
+                                        <div class="flex items-center text-yellow-500">
+                                            <span class="material-icons-round text-sm">star</span>
+                                            <span class="text-sm ml-1">4.8</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-icons-round text-xs">schedule</span>
+                                                12 أسبوع
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-icons-round text-xs">people</span>
+                                                245 طالب
+                                            </span>
+                                        </div>
+                                        <div class="text-lg font-bold text-primary">₪299</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Course Card 2 -->
+                            <div
+                                class="min-w-[320px] bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                                <div
+                                    class="relative h-48 bg-gradient-to-br from-secondary to-yellow-600 overflow-hidden">
+                                    <div class="absolute inset-0 bg-black/20"></div>
+                                    <img src="https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=400&h=200&fit=crop"
+                                        alt="Course" class="w-full h-full object-cover opacity-70">
+                                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full">
+                                        <span class="text-xs font-semibold text-secondary">فيزياء</span>
+                                    </div>
+                                    <div
+                                        class="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                                        NEW
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">الفيزياء التطبيقية
+                                    </h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">أساسيات الفيزياء مع تطبيقات
+                                        عملية وتجارب معملية</p>
+
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div class="flex items-center">
+                                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face"
+                                                alt="Teacher" class="w-8 h-8 rounded-full">
+                                            <span class="text-sm text-gray-700 dark:text-gray-300 mr-2">د. سارة
+                                                أحمد</span>
+                                        </div>
+                                        <div class="flex items-center text-yellow-500">
+                                            <span class="material-icons-round text-sm">star</span>
+                                            <span class="text-sm ml-1">4.9</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-icons-round text-xs">schedule</span>
+                                                8 أسابيع
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-icons-round text-xs">people</span>
+                                                189 طالب
+                                            </span>
+                                        </div>
+                                        <div class="text-lg font-bold text-primary">₪249</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Course Card 3 -->
+                            <div
+                                class="min-w-[320px] bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                                <div
+                                    class="relative h-48 bg-gradient-to-br from-purple-500 to-purple-700 overflow-hidden">
+                                    <div class="absolute inset-0 bg-black/20"></div>
+                                    <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&h=200&fit=crop"
+                                        alt="Course" class="w-full h-full object-cover opacity-70">
+                                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full">
+                                        <span class="text-xs font-semibold text-purple-600">كيمياء</span>
+                                    </div>
+                                    <div
+                                        class="absolute top-4 right-4 bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                                        PRO
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">الكيمياء العضوية
+                                    </h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">دراسة متعمقة للمركبات
+                                        العضوية
+                                        وتفاعلاتها</p>
+
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div class="flex items-center">
+                                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face"
+                                                alt="Teacher" class="w-8 h-8 rounded-full">
+                                            <span class="text-sm text-gray-700 dark:text-gray-300 mr-2">أ. محمد
+                                                خالد</span>
+                                        </div>
+                                        <div class="flex items-center text-yellow-500">
+                                            <span class="material-icons-round text-sm">star</span>
+                                            <span class="text-sm ml-1">4.7</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-icons-round text-xs">schedule</span>
+                                                10 أسابيع
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-icons-round text-xs">people</span>
+                                                156 طالب
+                                            </span>
+                                        </div>
+                                        <div class="text-lg font-bold text-primary">₪349</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Course Card 4 -->
+                            <div
+                                class="min-w-[320px] bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                                <div
+                                    class="relative h-48 bg-gradient-to-br from-green-500 to-green-700 overflow-hidden">
+                                    <div class="absolute inset-0 bg-black/20"></div>
+                                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400&h=200&fit=crop"
+                                        alt="Course" class="w-full h-full object-cover opacity-70">
+                                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full">
+                                        <span class="text-xs font-semibold text-green-600">أحياء</span>
+                                    </div>
+                                    <div
+                                        class="absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                                        SALE
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">الأحياء الجزيئية
+                                    </h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">الأساسيات المتقدمة في علم
+                                        الأحياء الجزيئي</p>
+
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div class="flex items-center">
+                                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face"
+                                                alt="Teacher" class="w-8 h-8 rounded-full">
+                                            <span class="text-sm text-gray-700 dark:text-gray-300 mr-2">د. نادية
+                                                علي</span>
+                                        </div>
+                                        <div class="flex items-center text-yellow-500">
+                                            <span class="material-icons-round text-sm">star</span>
+                                            <span class="text-sm ml-1">4.6</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-icons-round text-xs">schedule</span>
+                                                6 أسابيع
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-icons-round text-xs">people</span>
+                                                312 طالب
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-sm text-gray-500 line-through">₪399</span>
+                                            <div class="text-lg font-bold text-primary">₪199</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Course Card 5 -->
+                            <div
+                                class="min-w-[320px] bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                                <div class="relative h-48 bg-gradient-to-br from-blue-500 to-blue-700 overflow-hidden">
+                                    <div class="absolute inset-0 bg-black/20"></div>
+                                    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=200&fit=crop"
+                                        alt="Course" class="w-full h-full object-cover opacity-70">
+                                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full">
+                                        <span class="text-xs font-semibold text-blue-600">لغات</span>
+                                    </div>
+                                    <div
+                                        class="absolute top-4 right-4 bg-purple-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                                        VIP
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">اللغة الإنجليزية
+                                        المتقدمة</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">إتقان اللغة الإنجليزية
+                                        للمستوى
+                                        المتقدم والأكاديمي</p>
+
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div class="flex items-center">
+                                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face"
+                                                alt="Teacher" class="w-8 h-8 rounded-full">
+                                            <span class="text-sm text-gray-700 dark:text-gray-300 mr-2">أ. ليلى
+                                                حسن</span>
+                                        </div>
+                                        <div class="flex items-center text-yellow-500">
+                                            <span class="material-icons-round text-sm">star</span>
+                                            <span class="text-sm ml-1">5.0</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-icons-round text-xs">schedule</span>
+                                                16 أسبوع
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-icons-round text-xs">people</span>
+                                                428 طالب
+                                            </span>
+                                        </div>
+                                        <div class="text-lg font-bold text-primary">₪449</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Indicator -->
+                    <div class="flex justify-center mt-8 gap-2">
+                        <div class="w-2 h-2 bg-primary rounded-full transition-all duration-300" data-slide="0"></div>
+                        <div class="w-2 h-2 bg-gray-300 dark:bg-gray-600 rounded-full transition-all duration-300"
+                            data-slide="1"></div>
+                        <div class="w-2 h-2 bg-gray-300 dark:bg-gray-600 rounded-full transition-all duration-300"
+                            data-slide="2"></div>
+                        <div class="w-2 h-2 bg-gray-300 dark:bg-gray-600 rounded-full transition-all duration-300"
+                            data-slide="3"></div>
+                        <div class="w-2 h-2 bg-gray-300 dark:bg-gray-600 rounded-full transition-all duration-300"
+                            data-slide="4"></div>
+                    </div>
+                </div>
+
+                <!-- View All Button -->
+                <div class="text-center mt-12">
+                    <button
+                        class="bg-prima from-primary to-secondary text-white px-8 py-3 rounded-md font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center gap-2 mx-auto">
+                        <span>عرض جميع الكورسات</span>
+                        <span class="material-icons-round">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+        <section class="py-16 bg-white dark:bg-gray-900">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                        اكتشف <span class="text-primary">الكورسات</span> المناسبة
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                        محرك بحث ذكي يساعدك على العثور على الكورسات المثالية بسرعة
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
+                    <!-- Content -->
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                                <span class="material-icons-round text-primary">search</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900 dark:text-white">بحث سريع ودقيق</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">نتائج فورية وتصفية ذكية</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                                <span class="material-icons-round text-blue-600 dark:text-blue-400">filter_list</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900 dark:text-white">تصفية حسب المستوى</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">تصفية متقدمة حسب احتياجاتك</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
+                                <span class="material-icons-round text-purple-600 dark:text-purple-400">star</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900 dark:text-white">تقييمات الطلاب</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">آراء حقيقية من الطلاب</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 flex gap-3">
+                            <button class="w-full font-semibold py-3 rounded-md
+           bg-primary text-white
+           shadow-md
+           transition-colors duration-300
+           hover:bg-secondary">
+                                تصفح الكورسات </button>
+
+                        </div>
+                    </div>
+
+                    <!-- Image -->
+                    <div class="relative">
+                        <img alt="Course Search" class="w-full max-w-sm mx-auto rounded-lg shadow-lg"
+                            src="browse.jpg" />
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-8 mt-12 max-w-2xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-primary">500+</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">كورس</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-secondary">50+</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">مدرس</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-primary">10K+</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">طالب</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Subjects Section -->
+        <section
+            class="py-12 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
+            <!-- Background decoration -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute top-10 left-10 w-20 h-20 bg-primary rounded-full blur-2xl"></div>
+                <div class="absolute bottom-10 right-10 w-24 h-24 bg-blue-500 rounded-full blur-2xl"></div>
+                <div class="absolute top-1/2 left-1/3 w-16 h-16 bg-purple-500 rounded-full blur-xl"></div>
+            </div>
+
+            <div class="container mx-auto px-4 relative z-10">
+
+                <div class="text-center mb-12">
+                    <div class="inline-block relative mb-4">
+                        <h2 class="text-3xl md:text-4xl font-black text-primary">
+                            <span class="text-secondary">مواد</span> التفوق
+                        </h2>
+                        <div
+                            class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full">
+                        </div>
+                    </div>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                        مناهج متكاملة تغطي جميع المراحل الدراسية مع أفضل المدرسين المتخصصين
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <!-- Grade 1 Card -->
+                    <div
+                        class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 cursor-pointer">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">الصف الأول الثانوي</h3>
+                            <div
+                                class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                <span class="material-icons-round text-primary text-lg">school</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                                        <span class="material-icons-round text-primary text-sm">menu_book</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 dark:text-white">اللغة العربية</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">أ. محمد صلاح</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">متاح</span>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                        <span class="material-icons-round text-blue-500 text-sm">language</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 dark:text-white">اللغة الألمانية</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">أ. سارة أحمد</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">متاح</span>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                        <span class="material-icons-round text-purple-500 text-sm">translate</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 dark:text-white">اللغة الإنجليزية</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">أ. أحمد علي</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">متاح</span>
+                            </div>
+                        </div>
+
+                        <button class="w-full font-semibold py-3 rounded-md
+           bg-primary text-white
+           shadow-md
+           transition-colors duration-300
+           hover:bg-secondary">
+                            عرض جميع المواد
+                        </button>
+                    </div>
+                    <!-- Grade 2 Card -->
+                    <div
+                        class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 cursor-pointer">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">الصف الأول الثانوي</h3>
+                            <div
+                                class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                <span class="material-icons-round text-primary text-lg">school</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                                        <span class="material-icons-round text-primary text-sm">menu_book</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 dark:text-white">اللغة العربية</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">أ. محمد صلاح</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">متاح</span>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                        <span class="material-icons-round text-blue-500 text-sm">language</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 dark:text-white">اللغة الألمانية</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">أ. سارة أحمد</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">متاح</span>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                        <span class="material-icons-round text-purple-500 text-sm">translate</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 dark:text-white">اللغة الإنجليزية</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">أ. أحمد علي</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">متاح</span>
+                            </div>
+                        </div>
+
+                        <button class="w-full font-semibold py-3 rounded-md
+           bg-primary text-white
+           shadow-md
+           transition-colors duration-300
+           hover:bg-secondary">
+                            عرض جميع المواد
+                        </button>
+                    </div>
+                    <!-- Grade 3 Card -->
+                    <div
+                        class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 cursor-pointer">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">الصف الأول الثانوي</h3>
+                            <div
+                                class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                <span class="material-icons-round text-primary text-lg">school</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                                        <span class="material-icons-round text-primary text-sm">menu_book</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 dark:text-white">اللغة العربية</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">أ. محمد صلاح</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">متاح</span>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                        <span class="material-icons-round text-blue-500 text-sm">language</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 dark:text-white">اللغة الألمانية</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">أ. سارة أحمد</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">متاح</span>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                        <span class="material-icons-round text-purple-500 text-sm">translate</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 dark:text-white">اللغة الإنجليزية</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">أ. أحمد علي</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">متاح</span>
+                            </div>
+                        </div>
+
+                        <button class="w-full font-semibold py-3 rounded-md
+           bg-primary text-white
+           shadow-md
+           transition-colors duration-300
+           hover:bg-secondary">
+                            عرض جميع المواد
+                        </button>
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+        </section>
+        <section
+            class="py-16 bg-gradient-to-br from-background-light via-white to-background-light dark:from-background-dark dark:via-surface-dark dark:to-background-dark relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute top-10 right-10 w-32 h-32 bg-primary rounded-full blur-3xl animate-pulse"></div>
+                <div
+                    class="absolute bottom-10 left-10 w-40 h-40 bg-secondary rounded-full blur-3xl animate-pulse delay-1000">
+                </div>
+                <div
+                    class="absolute top-1/2 left-1/3 w-24 h-24 bg-accent-pink rounded-full blur-2xl animate-pulse delay-500">
+                </div>
+            </div>
+
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="container mx-auto px-4 relative z-10">
+                    <div class="text-center mb-12">
+                        <div class="inline-block relative mb-4">
+                            <h2 class="text-3xl md:text-4xl font-black text-primary">
+                                <span class="text-secondary">مع</span> التفوق
+                            </h2>
+                            <div
+                                class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full">
+                            </div>
+                        </div>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                            اكتشف أفضل الكورسات المعتمدة من مدرسين متخصصين وابدأ رحلتك التعليمية الآن
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <!-- Feature 1: Discussion -->
+                        <div class="group relative">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl transform scale-105 group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div
+                                class="relative bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-700 rounded-2xl p-8 text-center hover:shadow-card transition-all duration-500 cursor-pointer">
+                                <div
+                                    class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/10 to-transparent rounded-full transform translate-x-4 -translate-y-4">
+                                </div>
+
+                                <div
+                                    class="relative bg-gradient-to-br from-primary to-primary-light w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-icons-round text-white text-2xl">forum</span>
+                                </div>
+
+                                <h3 class="font-bold text-xl mb-3 text-gray-900 dark:text-white">هتشارك</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">
+                                    مجموعات تفاعلية للمناقشة وتبادل الأفكار مع زملائك في بيئة تعليمية محفزة
+                                </p>
+
+                                <div
+                                    class="flex items-center justify-center text-primary text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span>انضم الآن</span>
+                                    <span class="material-icons-round text-sm mr-1">arrow_back</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feature 2: Competition -->
+                        <div class="group relative">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-accent-pink/5 rounded-2xl transform scale-105 group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div
+                                class="relative bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-700 rounded-2xl p-8 text-center hover:shadow-card transition-all duration-500 cursor-pointer">
+                                <div
+                                    class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-secondary/10 to-transparent rounded-full transform translate-x-4 -translate-y-4">
+                                </div>
+
+                                <div
+                                    class="relative bg-gradient-to-br from-secondary to-accent-pink w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-icons-round text-white text-2xl">emoji_events</span>
+                                </div>
+
+                                <h3 class="font-bold text-xl mb-3 text-gray-900 dark:text-white">هتنافس</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">
+                                    نظام تحفيزي متكامل بالنقاط والجوائز لتشجيع التفوق والتميز الأكاديمي
+                                </p>
+
+                                <div
+                                    class="flex items-center justify-center text-secondary text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span>ابدأ التحدي</span>
+                                    <span class="material-icons-round text-sm mr-1">arrow_back</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feature 3: Preparation -->
+                        <div class="group relative">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-primary/5 rounded-2xl transform scale-105 group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div
+                                class="relative bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-700 rounded-2xl p-8 text-center hover:shadow-card transition-all duration-500 cursor-pointer">
+                                <div
+                                    class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full transform translate-x-4 -translate-y-4">
+                                </div>
+
+                                <div
+                                    class="relative bg-gradient-to-br from-purple-500 to-primary w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-icons-round text-white text-2xl">psychology</span>
+                                </div>
+
+                                <h3 class="font-bold text-xl mb-3 text-gray-900 dark:text-white">هنجهزك</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">
+                                    خطط دراسية مخصصة وجداول متابعة يومية لضمان التفوق في جميع المواد
+                                </p>
+
+                                <div
+                                    class="flex items-center justify-center text-purple-500 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span>اطلب خطة</span>
+                                    <span class="material-icons-round text-sm mr-1">arrow_back</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feature 4: Practice -->
+                        <div class="group relative">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-green-500/5 to-primary/5 rounded-2xl transform scale-105 group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div
+                                class="relative bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-700 rounded-2xl p-8 text-center hover:shadow-card transition-all duration-500 cursor-pointer">
+                                <div
+                                    class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-green-500/10 to-transparent rounded-full transform translate-x-4 -translate-y-4">
+                                </div>
+
+                                <div
+                                    class="relative bg-gradient-to-br from-green-500 to-primary w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-icons-round text-white text-2xl">quiz</span>
+                                </div>
+
+                                <h3 class="font-bold text-xl mb-3 text-gray-900 dark:text-white">هتدرب</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">
+                                    امتحانات تفاعلية متكررة مع تحليل الأداء وتحديد نقاط القوة والضعف
+                                </p>
+
+                                <div
+                                    class="flex items-center justify-center text-green-500 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span>جرب الآن</span>
+                                    <span class="material-icons-round text-sm mr-1">arrow_back</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom CTA -->
+                    <div class="mt-16 text-center">
+                        <div
+                            class="inline-flex items-center gap-3 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-md shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 cursor-pointer">
+                            <span class="material-icons-round">rocket_launch</span>
+                            <span class="font-bold text-lg">ابدأ رحلتك التعليمية الآن</span>
+                            <span class="material-icons-round">arrow_back</span>
+                        </div>
+                    </div>
+                </div>
+        </section>
+        <section
+            class="py-12 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute top-20 right-20 w-32 h-32 bg-primary rounded-full blur-3xl animate-pulse"></div>
+                <div
+                    class="absolute bottom-20 left-20 w-40 h-40 bg-secondary rounded-full blur-2xl animate-pulse delay-1000">
+                </div>
+            </div>
+
+            <div class="container mx-auto px-4 relative z-10">
+                <!-- Section Header -->
+            <div class="text-center mb-12">
+                    <div class="inline-block relative mb-4">
+                        <h2 class="text-3xl md:text-4xl font-black text-primary">
+                            <span class="text-secondary">مميزات</span> المنصة
+                        </h2>
+                        <div
+                            class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full">
+                        </div>
+                    </div>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                        مناهج متكاملة تغطي جميع المراحل الدراسية مع أفضل المدرسين المتخصصين
+                    </p>
+                </div>
+
+                <!-- Rotating Border Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    <!-- Card 1: AI Learning -->
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-0 rounded-xl p-[1px] bg-gradient-to-r from-primary via-secondary to-accent-pink animate-spin-slow">
+                            <div class="w-full h-full bg-white dark:bg-gray-900 rounded-xl"></div>
+                        </div>
+                        <div
+                            class="relative bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-100 dark:border-gray-800">
+                            <div class="flex flex-col items-center text-center">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center mb-4 shadow-lg">
+                                    <span class="material-icons-round text-white text-lg">smart_toy</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">تعليم ذكي</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed mb-3">
+                                    نظام تعليمي مدعوم بالذكاء الاصطناعي يقدم توصيات مخصصة لكل طالب
+                                </p>
+                                <div class="space-y-1 text-left w-full">
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-primary text-xs">check_circle</span>
+                                        <span>توصيات ذكية</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-primary text-xs">check_circle</span>
+                                        <span>تحليل الأداء</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-primary text-xs">check_circle</span>
+                                        <span>تعلم تكيفي</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Interactive Content -->
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-0 rounded-xl p-[1px] bg-gradient-to-r from-secondary via-accent-pink to-primary animate-spin-slow">
+                            <div class="w-full h-full bg-white dark:bg-gray-900 rounded-xl"></div>
+                        </div>
+                        <div
+                            class="relative bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-100 dark:border-gray-800">
+                            <div class="flex flex-col items-center text-center">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-secondary to-yellow-600 rounded-xl flex items-center justify-center mb-4 shadow-lg">
+                                    <span class="material-icons-round text-white text-lg">touch_app</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">محتوى تفاعلي</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed mb-3">
+                                    محتوى تعليمي تفاعلي يجعل التعلم ممتعاً وفعالاً من خلال التجارب العملية
+                                </p>
+                                <div class="space-y-1 text-left w-full">
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-secondary text-xs">check_circle</span>
+                                        <span>محاكاة تفاعلية</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-secondary text-xs">check_circle</span>
+                                        <span>تجارب افتراضية</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-secondary text-xs">check_circle</span>
+                                        <span>تعلم باللعب</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Progress Tracking -->
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-0 rounded-xl p-[1px] bg-gradient-to-r from-accent-pink via-primary to-secondary animate-spin-slow">
+                            <div class="w-full h-full bg-white dark:bg-gray-900 rounded-xl"></div>
+                        </div>
+                        <div
+                            class="relative bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-100 dark:border-gray-800">
+                            <div class="flex flex-col items-center text-center">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl flex items-center justify-center mb-4 shadow-lg">
+                                    <span class="material-icons-round text-white text-lg">trending_up</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">تتبع التقدم</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed mb-3">
+                                    نظام متقدم لتتبع التقدم الأكاديمي وتقارير مفصلة للآباء والطلاب
+                                </p>
+                                <div class="space-y-1 text-left w-full">
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-purple-500 text-xs">check_circle</span>
+                                        <span>تقارير مفصلة</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-purple-500 text-xs">check_circle</span>
+                                        <span>رسوم بيانية</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-purple-500 text-xs">check_circle</span>
+                                        <span>تحليل الأداء</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Live Sessions -->
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-0 rounded-xl p-[1px] bg-gradient-to-r from-green-500 via-primary to-secondary animate-spin-slow">
+                            <div class="w-full h-full bg-white dark:bg-gray-900 rounded-xl"></div>
+                        </div>
+                        <div
+                            class="relative bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-100 dark:border-gray-800">
+                            <div class="flex flex-col items-center text-center">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center mb-4 shadow-lg">
+                                    <span class="material-icons-round text-white text-lg">live_tv</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">جلسات مباشرة</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed mb-3">
+                                    فصول دراسية مباشرة مع مدرسين متخصصين وتفاعل فوري مع الطلاب
+                                </p>
+                                <div class="space-y-1 text-left w-full">
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-green-500 text-xs">check_circle</span>
+                                        <span>بث مباشر</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-green-500 text-xs">check_circle</span>
+                                        <span>تفاعل فوري</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-green-500 text-xs">check_circle</span>
+                                        <span>تسجيل الجلسات</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Gamification -->
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-0 rounded-xl p-[1px] bg-gradient-to-r from-blue-500 via-accent-pink to-primary animate-spin-slow">
+                            <div class="w-full h-full bg-white dark:bg-gray-900 rounded-xl"></div>
+                        </div>
+                        <div
+                            class="relative bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-100 dark:border-gray-800">
+                            <div class="flex flex-col items-center text-center">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center mb-4 shadow-lg">
+                                    <span class="material-icons-round text-white text-lg">emoji_events</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">التعلم باللعب</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed mb-3">
+                                    نظام تحفيزي يدمج التعليم مع الألعاب لزيادة الحافز والمشاركة
+                                </p>
+                                <div class="space-y-1 text-left w-full">
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-blue-500 text-xs">check_circle</span>
+                                        <span>نقاط ومكافآت</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-blue-500 text-xs">check_circle</span>
+                                        <span>تحديات أسبوعية</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-blue-500 text-xs">check_circle</span>
+                                        <span>لوحة الصدارة</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: Personal Learning -->
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-0 rounded-xl p-[1px] bg-gradient-to-r from-orange-500 via-green-500 to-primary animate-spin-slow">
+                            <div class="w-full h-full bg-white dark:bg-gray-900 rounded-xl"></div>
+                        </div>
+                        <div
+                            class="relative bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-100 dark:border-gray-800">
+                            <div class="flex flex-col items-center text-center">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-700 rounded-xl flex items-center justify-center mb-4 shadow-lg">
+                                    <span class="material-icons-round text-white text-lg">person</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">تعلم شخصي</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed mb-3">
+                                    مسارات تعليمية مخصصة تناسب احتياجات وقدرات كل طالب
+                                </p>
+                                <div class="space-y-1 text-left w-full">
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-orange-500 text-xs">check_circle</span>
+                                        <span>مسارات مخصصة</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-orange-500 text-xs">check_circle</span>
+                                        <span>سرعة فردية</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <span class="material-icons-round text-orange-500 text-xs">check_circle</span>
+                                        <span>محتوى متكيف</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom CTA -->
+                <div class="mt-16 text-center">
+                    <div
+                        class="inline-flex items-center gap-3 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-md shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 cursor-pointer">
+                        <span class="material-icons-round">rocket_launch</span>
+                        <span class="font-bold text-lg"> اكتشف جميع المميزات</span>
+                        <span class="material-icons-round">arrow_back</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Custom CSS for Rotating Border Animation -->
+        <style>
+            @keyframes spin-slow {
+                from {
+                    transform: rotate(0deg);
+                }
+
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .animate-spin-slow {
+                animation: spin-slow linear infinite;
+            }
+
+            /* Ensure smooth performance */
+            .animate-spin-slow {
+                will-change: transform;
+                transform: translateZ(0);
+                backface-visibility: hidden;
+                perspective: 1000px;
+            }
+
+            /* Dark mode adjustments */
+            .dark .animate-spin-slow {
+                opacity: 0.9;
+            }
+
+            /* Hover effects */
+            .group:hover .animate-spin-slow {
+                animation-duration: 4s;
+            }
+
+            /* Card hover effects */
+            .group:hover .relative>div:last-child {
+                transform: scale(1.02);
+                transition: transform 0.3s ease;
+            }
+        </style>
+
+        <a class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-sm hover:shadow-green-500/40 transition-all z-50 "
+            href="#">
+            <i class="material-icons-round text-3xl">chat</i>
+        </a>
+        <button aria-label="Toggle Dark Mode"
+            class="theme-toggle bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 w-12 h-12 rounded-full flex items-center justify-center shadow-sm transition-colors hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none"
+            onclick="document.documentElement.classList.toggle('dark')">
+            <span class="material-icons-round dark:hidden">dark_mode</span>
+            <span class="material-icons-round hidden dark:block">light_mode</span>
+        </button>
+
+        <script>
+            // Anime.js Animations
+            document.addEventListener('DOMContentLoaded', function () {
+                // Cursor Spotlight Effect
+                const spotlightCards = document.querySelectorAll('.card-spotlight');
+
+                spotlightCards.forEach(card => {
+                    card.addEventListener('mousemove', function (e) {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+
+                        // Update CSS variables for cursor position
+                        card.style.setProperty('--mouse-x', `${x}px`);
+                        card.style.setProperty('--mouse-y', `${y}px`);
+                    });
+
+                    card.addEventListener('mouseleave', function () {
+                        // Reset on mouse leave
+                        card.style.setProperty('--mouse-x', '50%');
+                        card.style.setProperty('--mouse-y', '50%');
+                    });
+
+                    // Initialize with center position
+                    card.style.setProperty('--mouse-x', '50%');
+                    card.style.setProperty('--mouse-y', '50%');
+                });
+
+                // Initial page load animation
+                anime({
+                    targets: 'body',
+                    opacity: [0, 1],
+                    duration: 800,
+                    easing: 'easeInOutQuad'
+                });
+
+                // Header animation
+                anime({
+                    targets: 'header h1',
+                    translateY: [50, 0],
+                    opacity: [0, 1],
+                    duration: 1000,
+                    easing: 'easeOutExpo',
+                    delay: 200
+                });
+
+                anime({
+                    targets: 'header p',
+                    translateY: [30, 0],
+                    opacity: [0, 1],
+                    duration: 1000,
+                    easing: 'easeOutExpo',
+                    delay: 400
+                });
+
+                anime({
+                    targets: 'header button',
+                    translateY: [30, 0],
+                    opacity: [0, 1],
+                    duration: 1000,
+                    easing: 'easeOutExpo',
+                    delay: 600,
+                    complete: function () {
+                        // Add hover animations to buttons
+                        anime({
+                            targets: 'header button',
+                            scale: 1.05,
+                            duration: 300,
+                            easing: 'easeInOutQuad',
+                            direction: 'alternate',
+                            loop: true,
+                            delay: anime.stagger(200)
+                        });
+                    }
+                });
+
+                // Line animation
+                const line = document.querySelector(".line-animate");
+                if (line) {
+                    const lineObserver = new IntersectionObserver(entries => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                line.classList.add("active");
+                                anime({
+                                    targets: '.line-animate',
+                                    width: ['0', '10rem'],
+                                    duration: 1500,
+                                    easing: 'easeOutExpo'
+                                });
+                            }
+                        });
+                    }, { threshold: 0.6 });
+                    lineObserver.observe(line);
+                }
+
+                // Filter buttons animation
+                document.querySelectorAll(".filter-group").forEach(group => {
+                    const buttons = group.querySelectorAll(".filter-btn");
+                    const indicator = group.querySelector(".indicator");
+
+                    function moveIndicator(button) {
+                        const rect = button.getBoundingClientRect();
+                        const parentRect = group.getBoundingClientRect();
+
+                        anime({
+                            targets: indicator,
+                            width: rect.width,
+                            right: (parentRect.right - rect.right),
+                            duration: 300,
+                            easing: 'easeOutExpo'
+                        });
+                    }
+
+                    buttons.forEach(btn => {
+                        btn.addEventListener("click", () => {
+                            buttons.forEach(b => b.classList.remove("active"));
+                            btn.classList.add("active");
+                            moveIndicator(btn);
+
+                            // Button click animation
+                            anime({
+                                targets: btn,
+                                scale: [1, 0.95, 1],
+                                duration: 200,
+                                easing: 'easeInOutQuad'
+                            });
+                        });
+                    });
+
+                    moveIndicator(group.querySelector(".active"));
+                });
+
+                // Typewriter effect
+                const typewriter = document.querySelector(".typewriter");
+                if (typewriter) {
+                    const textElement = typewriter.querySelector(".typed-text");
+                    const fullText = typewriter.getAttribute("data-text");
+                    const cursor = typewriter.querySelector(".cursor");
+
+                    let index = 0;
+
+                    function typeEffect() {
+                        if (index < fullText.length) {
+                            textElement.textContent += fullText.charAt(index);
+                            index++;
+
+                            let delay = Math.random() * 40 + 20;
+                            if (fullText.charAt(index - 1) === "،") delay = 250;
+
+                            setTimeout(typeEffect, delay);
+                        } else {
+                            setTimeout(() => {
+                                typewriter.classList.add("finished");
+                                anime({
+                                    targets: cursor,
+                                    opacity: 0,
+                                    duration: 300,
+                                    easing: 'easeInOutQuad'
+                                });
+                            }, 600);
+                        }
+                    }
+
+                    const typeObserver = new IntersectionObserver(entries => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                typewriter.classList.add("visible");
+                                anime({
+                                    targets: typewriter,
+                                    opacity: [0, 1],
+                                    translateY: [10, 0],
+                                    duration: 600,
+                                    easing: 'easeOutExpo',
+                                    complete: typeEffect
+                                });
+                                typeObserver.disconnect();
+                            }
+                        });
+                    }, { threshold: 0.6 });
+                    typeObserver.observe(typewriter);
+                }
+
+                // Card animations on scroll
+                const cardObserver = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            anime({
+                                targets: entry.target,
+                                translateY: [50, 0],
+                                opacity: [0, 1],
+                                duration: 800,
+                                easing: 'easeOutExpo',
+                                delay: anime.stagger(100, { start: 100 })
+                            });
+                            cardObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                // Courses Slider Functionality
+                const sliderTrack = document.getElementById('sliderTrack');
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                const indicators = document.querySelectorAll('[data-slide]');
+
+                let currentSlide = 0;
+                const totalSlides = 5;
+                const slideWidth = 326; // 320px + 6px gap
+
+                function updateSlider() {
+                    const offset = -currentSlide * slideWidth;
+                    sliderTrack.style.transform = `translateX(${offset}px)`;
+
+                    // Update indicators
+                    indicators.forEach((indicator, index) => {
+                        if (index === currentSlide) {
+                            indicator.classList.remove('bg-gray-300', 'dark:bg-gray-600');
+                            indicator.classList.add('bg-primary');
+                        } else {
+                            indicator.classList.remove('bg-primary');
+                            indicator.classList.add('bg-gray-300', 'dark:bg-gray-600');
+                        }
+                    });
+
+                    // Update button states
+                    prevBtn.disabled = currentSlide === 0;
+                    nextBtn.disabled = currentSlide === totalSlides - 1;
+
+                    // Add disabled styling
+                    if (prevBtn.disabled) {
+                        prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    } else {
+                        prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+
+                    if (nextBtn.disabled) {
+                        nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    } else {
+                        nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                }
+
+                function nextSlide() {
+                    if (currentSlide < totalSlides - 1) {
+                        currentSlide++;
+                        updateSlider();
+                    }
+                }
+
+                function prevSlide() {
+                    if (currentSlide > 0) {
+                        currentSlide--;
+                        updateSlider();
+                    }
+                }
+
+                // Event listeners
+                nextBtn.addEventListener('click', nextSlide);
+                prevBtn.addEventListener('click', prevSlide);
+
+                // Indicator clicks
+                indicators.forEach((indicator, index) => {
+                    indicator.addEventListener('click', () => {
+                        currentSlide = index;
+                        updateSlider();
+                    });
+                });
+
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') prevSlide();
+                    if (e.key === 'ArrowRight') nextSlide();
+                });
+
+                // Touch/swipe support
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                sliderTrack.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                });
+
+                sliderTrack.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                });
+
+                function handleSwipe() {
+                    const swipeThreshold = 50;
+                    const diff = touchStartX - touchEndX;
+
+                    if (Math.abs(diff) > swipeThreshold) {
+                        if (diff > 0) {
+                            nextSlide(); // Swipe left
+                        } else {
+                            prevSlide(); // Swipe right
+                        }
+                    }
+                }
+
+                // Auto-play (optional)
+                let autoPlayInterval;
+                let isAutoPlaying = false;
+
+                function startAutoPlay() {
+                    if (!isAutoPlaying) {
+                        isAutoPlaying = true;
+                        autoPlayInterval = setInterval(() => {
+                            if (currentSlide === totalSlides - 1) {
+                                currentSlide = 0;
+                            } else {
+                                currentSlide++;
+                            }
+                            updateSlider();
+                        }, 4000);
+                    }
+                }
+
+                function stopAutoPlay() {
+                    if (isAutoPlaying) {
+                        isAutoPlaying = false;
+                        clearInterval(autoPlayInterval);
+                    }
+                }
+
+                // Pause on hover
+                sliderTrack.addEventListener('mouseenter', stopAutoPlay);
+                sliderTrack.addEventListener('mouseleave', startAutoPlay);
+
+                // Initialize
+                updateSlider();
+                startAutoPlay();
+
+                // Add hover animations to course cards
+                const courseCards = document.querySelectorAll('#sliderTrack > div');
+                courseCards.forEach(card => {
+                    card.addEventListener('mouseenter', function () {
+                        anime({
+                            targets: this,
+                            scale: 1.02,
+                            duration: 300,
+                            easing: 'easeOutQuad'
+                        });
+                    });
+
+                    card.addEventListener('mouseleave', function () {
+                        anime({
+                            targets: this,
+                            scale: 1,
+                            duration: 300,
+                            easing: 'easeOutQuad'
+                        });
+                    });
+                });
+
+                // Observe all cards
+                document.querySelectorAll('.card').forEach(card => {
+                    cardObserver.observe(card);
+                });
+
+                // Card hover animations
+                document.querySelectorAll('.card').forEach(card => {
+                    card.addEventListener('mouseenter', function () {
+                        anime({
+                            targets: this,
+                            translateY: -8,
+                            scale: 1.02,
+                            duration: 300,
+                            easing: 'easeOutExpo'
+                        });
+                    });
+
+                    card.addEventListener('mouseleave', function () {
+                        anime({
+                            targets: this,
+                            translateY: 0,
+                            scale: 1,
+                            duration: 300,
+                            easing: 'easeOutExpo'
+                        });
+                    });
+
+                    // Button hover animation
+                    const button = card.querySelector('button');
+                    if (button) {
+                        button.addEventListener('mouseenter', function () {
+                            anime({
+                                targets: this,
+                                scale: 1.05,
+                                duration: 200,
+                                easing: 'easeOutExpo'
+                            });
+                        });
+
+                        button.addEventListener('mouseleave', function () {
+                            anime({
+                                targets: this,
+                                scale: 1,
+                                duration: 200,
+                                easing: 'easeOutExpo'
+                            });
+                        });
+                    }
+                });
+
+                // Feature cards animation
+                document.querySelectorAll('.bg-gray-50, .dark\\:bg-gray-900').forEach(feature => {
+                    if (feature.querySelector('.material-icons-round')) {
+                        feature.addEventListener('mouseenter', function () {
+                            anime({
+                                targets: this.querySelector('.material-icons-round'),
+                                scale: 1.2,
+                                rotate: '1turn',
+                                duration: 600,
+                                easing: 'easeInOutExpo'
+                            });
+                        });
+
+                        feature.addEventListener('mouseleave', function () {
+                            anime({
+                                targets: this.querySelector('.material-icons-round'),
+                                scale: 1,
+                                rotate: '0turn',
+                                duration: 600,
+                                easing: 'easeInOutExpo'
+                            });
+                        });
+                    }
+                });
+
+                // Navbar scroll effect
+                let lastScroll = 0;
+                window.addEventListener('scroll', () => {
+                    const navbar = document.querySelector('nav');
+                    const currentScroll = window.pageYOffset;
+
+                    if (currentScroll > 100) {
+                        navbar.classList.add('navbar-scrolled');
+                    } else {
+                        navbar.classList.remove('navbar-scrolled');
+                    }
+
+                    lastScroll = currentScroll;
+                });
+
+                // Smooth scroll for navigation links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            anime({
+                                targets: 'html, body',
+                                scrollTop: target.offsetTop,
+                                duration: 800,
+                                easing: 'easeInOutExpo'
+                            });
+                        }
+                    });
+                });
+            });
+
+            // Neon Cursor Implementation
+            class NeonCursor {
+                constructor() {
+                    this.position = { x: 0, y: 0 };
+                    this.isClicking = false;
+                    this.isHovering = false;
+                    this.cursorMain = document.querySelector('.cursor-main');
+                    this.cursorTrail = document.querySelector('.cursor-trail');
+                    this.cursorGlow = document.querySelector('.cursor-glow');
+
+                    this.init();
+                }
+
+                init() {
+                    this.bindEvents();
+                    this.animate();
+                }
+
+                bindEvents() {
+                    document.addEventListener('mousemove', (e) => {
+                        this.position.x = e.clientX;
+                        this.position.y = e.clientY;
+                    });
+
+                    document.addEventListener('mousedown', () => {
+                        this.isClicking = true;
+                        this.updateCursorScale();
+                    });
+
+                    document.addEventListener('mouseup', () => {
+                        this.isClicking = false;
+                        this.updateCursorScale();
+                    });
+
+                    document.addEventListener('mouseover', (e) => {
+                        const target = e.target;
+                        if (target.matches('a, button, input, [data-hover="true"]')) {
+                            this.isHovering = true;
+                            this.updateHoverState();
+                        }
+                    });
+
+                    document.addEventListener('mouseout', (e) => {
+                        const target = e.target;
+                        if (target.matches('a, button, input, [data-hover="true"]')) {
+                            this.isHovering = false;
+                            this.updateHoverState();
+                        }
+                    });
+                }
+
+                updateCursorScale() {
+                    const scale = this.isClicking ? 0.8 : this.isHovering ? 1.2 : 1;
+                    anime({
+                        targets: this.cursorMain,
+                        scale: scale,
+                        duration: 300,
+                        easing: 'easeOutExpo'
+                    });
+                }
+
+                updateHoverState() {
+                    if (this.isHovering) {
+                        // Trail animation
+                        anime({
+                            targets: this.cursorTrail,
+                            scale: 1.5,
+                            borderColor: 'rgb(255, 150, 50)',
+                            borderWidth: '3px',
+                            duration: 300,
+                            easing: 'easeOutExpo'
+                        });
+
+                        // Glow animation
+                        anime({
+                            targets: this.cursorGlow,
+                            scale: 2,
+                            opacity: 0.8,
+                            duration: 300,
+                            easing: 'easeOutExpo'
+                        });
+                    } else {
+                        // Reset trail
+                        anime({
+                            targets: this.cursorTrail,
+                            scale: 1,
+                            borderColor: 'rgb(236, 101, 23)',
+                            borderWidth: '2px',
+                            duration: 300,
+                            easing: 'easeOutExpo'
+                        });
+
+                        // Reset glow
+                        anime({
+                            targets: this.cursorGlow,
+                            scale: 1,
+                            opacity: 0.4,
+                            duration: 300,
+                            easing: 'easeOutExpo'
+                        });
+                    }
+                }
+
+                animate() {
+                    const updateCursor = () => {
+                        // Main cursor with spring-like animation
+                        anime({
+                            targets: this.cursorMain,
+                            translateX: this.position.x - 10,
+                            translateY: this.position.y - 10,
+                            duration: 1,
+                            easing: 'linear'
+                        });
+
+                        // Trail cursor with spring animation
+                        anime({
+                            targets: this.cursorTrail,
+                            translateX: this.position.x - 20,
+                            translateY: this.position.y - 20,
+                            duration: 800,
+                            easing: 'easeOutExpo'
+                        });
+
+                        // Glow cursor with slower spring animation
+                        anime({
+                            targets: this.cursorGlow,
+                            translateX: this.position.x - 30,
+                            translateY: this.position.y - 30,
+                            duration: 1200,
+                            easing: 'easeOutExpo'
+                        });
+
+                        requestAnimationFrame(updateCursor);
+                    };
+
+                    updateCursor();
+                }
+            }
+
+            // Initialize Neon Cursor
+            const neonCursor = new NeonCursor();
+
+            // Educational Loader Functionality
+            class EducationalLoader {
+                constructor() {
+                    this.loader = document.getElementById('eduLoader');
+                    this.mainContent = document.getElementById('mainContent');
+                    this.init();
+                }
+
+                init() {
+                    // Hide loader after 1.5 seconds for faster experience
+                    setTimeout(() => {
+                        this.hideLoader();
+                    }, 1500);
+                }
+
+                hideLoader() {
+                    // Simple fade out
+                    this.loader.style.opacity = '0';
+                    this.loader.style.transition = 'opacity 0.5s ease';
+
+                    setTimeout(() => {
+                        this.loader.style.display = 'none';
+                        this.mainContent.style.display = 'block';
+                        this.mainContent.style.opacity = '0';
+                        this.mainContent.style.transition = 'opacity 0.5s ease';
+
+                        setTimeout(() => {
+                            this.mainContent.style.opacity = '1';
+                        }, 50);
+                    }, 500);
+                }
+            }
+
+            // Teachers Slider Functionality
+            class TeachersSlider {
+                constructor() {
+                    this.slider = document.getElementById('teacherSlider');
+                    this.prevBtn = document.getElementById('teacherPrevBtn');
+                    this.nextBtn = document.getElementById('teacherNextBtn');
+                    this.indicators = document.querySelectorAll('[data-teacher-slide]');
+                    this.currentSlide = 0;
+                    this.slidesPerView = this.getSlidesPerView();
+                    this.totalSlides = 6;
+
+                    this.init();
+                }
+
+                getSlidesPerView() {
+                    if (window.innerWidth >= 1024) return 4;
+                    if (window.innerWidth >= 768) return 2;
+                    return 1;
+                }
+
+                init() {
+                    this.bindEvents();
+                    this.updateSlider();
+                    this.updateIndicators();
+                }
+
+                bindEvents() {
+                    this.prevBtn.addEventListener('click', () => this.prevSlide());
+                    this.nextBtn.addEventListener('click', () => this.nextSlide());
+
+                    window.addEventListener('resize', () => {
+                        this.slidesPerView = this.getSlidesPerView();
+                        this.updateSlider();
+                    });
+                }
+
+                prevSlide() {
+                    if (this.currentSlide > 0) {
+                        this.currentSlide--;
+                        this.updateSlider();
+                        this.updateIndicators();
+                    }
+                }
+
+                nextSlide() {
+                    const maxSlide = Math.max(0, this.totalSlides - this.slidesPerView);
+                    if (this.currentSlide < maxSlide) {
+                        this.currentSlide++;
+                        this.updateSlider();
+                        this.updateIndicators();
+                    }
+                }
+
+                updateSlider() {
+                    const slideWidth = 280; // min-width + gap
+                    const offset = this.currentSlide * slideWidth;
+                    this.slider.style.transform = `translateX(-${offset}px)`;
+
+                    // Update button states
+                    this.prevBtn.style.opacity = this.currentSlide === 0 ? '0.5' : '1';
+                    this.prevBtn.style.cursor = this.currentSlide === 0 ? 'not-allowed' : 'pointer';
+
+                    const maxSlide = Math.max(0, this.totalSlides - this.slidesPerView);
+                    this.nextBtn.style.opacity = this.currentSlide >= maxSlide ? '0.5' : '1';
+                    this.nextBtn.style.cursor = this.currentSlide >= maxSlide ? 'not-allowed' : 'pointer';
+                }
+
+                updateIndicators() {
+                    this.indicators.forEach((indicator, index) => {
+                        if (index === this.currentSlide) {
+                            indicator.classList.add('bg-primary');
+                            indicator.classList.remove('bg-gray-300', 'dark:bg-gray-600');
+                        } else {
+                            indicator.classList.remove('bg-primary');
+                            indicator.classList.add('bg-gray-300', 'dark:bg-gray-600');
+                        }
+                    });
+                }
+            }
+
+            // Initialize loader and slider when page loads
+            document.addEventListener('DOMContentLoaded', () => {
+                const loader = new EducationalLoader();
+                const teachersSlider = new TeachersSlider();
+            });
+        </script>
+
+    </div> <!-- Close mainContent div -->
+
+</body>
+
+</html>

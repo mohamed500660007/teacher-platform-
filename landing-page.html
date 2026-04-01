@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>منصة التفوق التعليمية</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ["Cairo", "sans-serif"],
+                        body: ["Cairo", "sans-serif"],
+                    },
+                    colors: {
+                        primary: "#0EA5E9", // Sky Blue
+                        secondary: "#a66a1f", // Yellow
+                        "primary-dark": "#0284C7",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1E293B",
+                        "text-light": "#334155",
+                        "text-dark": "#E2E8F0",
+                        "accent-pink": "#F43F5E",
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Button Enhancements */
+        .btn-enhanced {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-enhanced:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 8px -1px rgba(28, 67, 150, 0.4);
+        }
+
+        .btn-enhanced:active {
+            transform: scale(0.98);
+        }
+
+        /* Navbar Enhancement */
+        .navbar-scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .navbar-scrolled {
+            background-color: rgba(10, 30, 62, 0.95);
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Tab System */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(to right, #0EA5E9, #a66a1f);
+            color: white;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0%, 25%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Card Hover Effects */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Step Number Circle */
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0EA5E9, #a66a1f);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark transition-colors duration-300">
+    <!-- Educational Loader -->
+    <div id="eduLoader" class="fixed inset-0 bg-white dark:bg-gray-900 z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="mb-8">
+                <div class="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <span class="material-icons-round text-3xl text-white">school</span>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">منصة التفوق</h2>
+            </div>
+            <div class="flex justify-center mb-4">
+                <div class="loading-spinner">
+                    <div class="spinner-circle"></div>
+                    <div class="spinner-circle"></div>
+                    <div class="spinner-circle"></div>
+                </div>
+            </div>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">جاري التحميل...</p>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden initially) -->
+    <div id="mainContent" style="display: none;">
+        <!-- Navigation -->
+        <nav class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-lg border-b border-gray-100/50 dark:border-gray-800/50">
+            <div class="container mx-auto px-4 h-20 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-2xl opacity-10 group-hover:opacity-20 transition-opacity blur-xl">
+                        </div>
+                        <div class="relative text-3xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent flex items-center gap-3">
+                            <div class="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/25 transform group-hover:scale-110 transition-transform">
+                                <span class="material-icons-round text-white text-2xl">school</span>
+                            </div>
+                            <span class="tracking-tight">التفوق</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden lg:flex items-center gap-8">
+                    <a class="relative group font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300" href="#home">
+                        <span class="relative z-10">الرئيسية</span>
+                        <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300">
+                        </div>
+                    </a>
+                    <a class="relative group font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300" href="#features">
+                        <span class="relative z-10">المميزات</span>
+                        <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300">
+                        </div>
+                    </a>
+                    <a class="relative group font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300" href="#courses">
+                        <span class="relative z-10">الكورسات</span>
+                        <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300">
+                        </div>
+                    </a>
+                    <a class="relative group font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300" href="#how-it-works">
+                        <span class="relative z-10">كيفية العمل</span>
+                        <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300">
+                        </div>
+                    </a>
+                    <a class="relative group font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-all duration-300" href="#contact">
+                        <span class="relative z-10">تواصل معنا</span>
+                        <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300">
+                        </div>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button class="relative group bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary/80 text-white px-8 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transform hover:scale-105 transition-all duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <span class="relative flex items-center gap-2">
+                            <span class="material-icons-round text-base">login</span>
+                            <span>تسجيل الدخول</span>
+                        </span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden relative group p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <span class="material-icons-round text-2xl text-gray-700 dark:text-gray-300">menu</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header id="home" class="relative pt-10 pb-20 overflow-hidden bg-gradient-to-br from-primary/5 via-white to-secondary/5 dark:from-primary/10 dark:via-gray-900 dark:to-secondary/10">
+            <div class="container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
+                <div class="text-center md:text-right order-2 md:order-1 space-y-6 fade-in">
+                    <h1 class="text-4xl md:text-6xl font-black text-primary leading-tight">
+                        منصتك التعليمية <span class="text-secondary">للمراحل الدراسية</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 font-bold">
+                        دروس فيديو، امتحانات، وتحليل أداء
+                    </p>
+                    <div class="pt-4 flex justify-center md:justify-start gap-4">
+                        <button class="btn-enhanced bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all">
+                            ابدأ الآن
+                        </button>
+                        <button class="btn-enhanced border-2 border-primary text-primary dark:text-white dark:border-white px-8 py-4 rounded-full font-bold text-lg hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-primary transition-all">
+                            عرض المواد
+                        </button>
+                    </div>
+                </div>
+                <div class="relative order-1 md:order-2 flex justify-center fade-in">
+                    <div class="relative">
+                        <img alt="Student Learning" class="relative z-10 w-full max-w-md object-contain rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=400&fit=crop" />
+                        <div class="absolute -top-3 -right-3 bg-white dark:bg-surface-dark rounded-xl shadow-md p-2 animate-bounce">
+                            <span class="material-icons-round text-primary text-lg">school</span>
+                        </div>
+                        <div class="absolute -bottom-3 -left-3 bg-primary text-white rounded-xl shadow-md p-2 animate-pulse">
+                            <span class="material-icons-round text-lg">emoji_events</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Features Overview Section -->
+        <section id="features" class="py-16 bg-white dark:bg-surface-dark relative">
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="text-center mb-12">
+                    <div class="inline-block relative mb-4">
+                        <h2 class="text-3xl md:text-4xl font-black text-primary">
+                            <span class="text-secondary">مميزات</span> المنصة
+                        </h2>
+                        <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full">
+                        </div>
+                    </div>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mt-4 max-w-xl mx-auto">
+                        كل ما تحتاجه للتفوق الدراسي في مكان واحد
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <!-- Feature 1 -->
+                    <div class="card-hover bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/20 dark:to-primary/10 rounded-2xl p-8 text-center border border-primary/20">
+                        <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                            <span class="material-icons-round text-white text-3xl">video_library</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">دروس فيديو عالية الجودة</h3>
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            محتوى تعليمي متكامل بجودة عالية مع أفضل المدرسين المتخصصين في جميع المواد
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="card-hover bg-gradient-to-br from-secondary/5 to-secondary/10 dark:from-secondary/20 dark:to-secondary/10 rounded-2xl p-8 text-center border border-secondary/20">
+                        <div class="w-20 h-20 bg-gradient-to-br from-secondary to-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                            <span class="material-icons-round text-white text-3xl">quiz</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">امتحانات مع تصحيح فوري</h3>
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            نظام امتحانات متقدم مع تصحيح فوري وتحليل مفصل للأداء والنتائج
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="card-hover bg-gradient-to-br from-purple-500/5 to-purple-500/10 dark:from-purple-500/20 dark:to-purple-500/10 rounded-2xl p-8 text-center border border-purple-500/20">
+                        <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                            <span class="material-icons-round text-white text-3xl">trending_up</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">متابعة التقدم والدرجات</h3>
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            نظام متابعة شامل للتقدم الأكاديمي مع تقارير مفصلة ونصائح للتحسين
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subjects & Courses Section -->
+        <section id="courses" class="py-20 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
+            <!-- Background decorative elements -->
+            <div class="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-72 h-72 bg-secondary/5 rounded-full blur-3xl"></div>
+            
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="text-center mb-16">
+                    <div class="inline-block relative mb-4">
+                        <h2 class="text-4xl md:text-5xl font-black text-primary">
+                            <span class="text-secondary">المواد</span> والكورسات
+                        </h2>
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-32 h-1.5 bg-gradient-to-r from-primary to-secondary rounded-full">
+                        </div>
+                    </div>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mt-6 max-w-2xl mx-auto">
+                        اختر المرحلة الدراسية المناسبة واستكشف مجموعة واسعة من المواد التعليمية المتميزة
+                    </p>
+                </div>
+
+                <!-- Enhanced Tabs -->
+                <div class="flex justify-center mb-12">
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl p-2 shadow-lg border border-gray-200 dark:border-gray-700 inline-flex">
+                        <button class="tab-btn active px-8 py-4 rounded-xl font-bold text-base transition-all duration-300 flex items-center gap-2" data-tab="primary">
+                            <span class="material-icons-round">child_care</span>
+                            الابتدائي
+                        </button>
+                        <button class="tab-btn px-8 py-4 rounded-xl font-bold text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 flex items-center gap-2" data-tab="middle">
+                            <span class="material-icons-round">school</span>
+                            الإعدادي
+                        </button>
+                        <button class="tab-btn px-8 py-4 rounded-xl font-bold text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 flex items-center gap-2" data-tab="secondary">
+                            <span class="material-icons-round">local_library</span>
+                            الثانوي
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab Content - Primary -->
+                <div id="primary" class="tab-content active">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Arabic -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-emerald-500 to-teal-600 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">menu_book</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الابتدائي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-emerald-600 dark:text-emerald-400 text-2xl">menu_book</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">اللغة العربية</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 1-6</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪199</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪149</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪299</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        45 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,250 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Mathematics -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-blue-500 to-indigo-600 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">calculate</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الابتدائي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-blue-600 dark:text-blue-400 text-2xl">calculate</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">الرياضيات</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 1-6</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪249</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪199</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪349</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        52 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,480 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Science -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-green-500 to-emerald-600 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">science</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الابتدائي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-green-600 dark:text-green-400 text-2xl">science</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">العلوم</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 1-6</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪229</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪179</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪329</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        38 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        980 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- English -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-rose-500 to-pink-600 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">language</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الابتدائي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-rose-100 dark:bg-rose-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-rose-600 dark:text-rose-400 text-2xl">language</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">اللغة الإنجليزية</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 1-6</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪219</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪169</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪319</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        42 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,120 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Islamic Education -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-cyan-500 to-blue-600 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">mosque</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الابتدائي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-cyan-100 dark:bg-cyan-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-cyan-600 dark:text-cyan-400 text-2xl">mosque</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">التربية الإسلامية</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 1-6</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪189</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪139</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪279</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        35 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        890 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Social Studies -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-amber-500 to-orange-600 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">public</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الابتدائي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-amber-600 dark:text-amber-400 text-2xl">public</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">الدراسات الاجتماعية</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 4-6</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪209</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪159</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪309</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        40 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        750 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content - Middle -->
+                <div id="middle" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Arabic -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-emerald-600 to-teal-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">menu_book</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الإعدادي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-emerald-600 dark:text-emerald-400 text-2xl">menu_book</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">اللغة العربية</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 7-9</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪299</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪249</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪399</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        55 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,680 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Mathematics -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-blue-600 to-indigo-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">calculate</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الإعدادي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-blue-600 dark:text-blue-400 text-2xl">calculate</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">الرياضيات</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 7-9</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪349</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪299</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪449</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        62 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        2,150 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Science -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-green-600 to-emerald-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">science</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الإعدادي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-green-600 dark:text-green-400 text-2xl">science</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">العلوم</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 7-9</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪329</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪279</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪429</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        48 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,420 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- English -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-rose-600 to-pink-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">language</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الإعدادي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-rose-100 dark:bg-rose-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-rose-600 dark:text-rose-400 text-2xl">language</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">اللغة الإنجليزية</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 7-9</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪319</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪269</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪419</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        50 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,890 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-rose-600 to-pink-700 hover:from-rose-700 hover:to-pink-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Islamic Education -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-cyan-600 to-blue-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">mosque</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الإعدادي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-cyan-100 dark:bg-cyan-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-cyan-600 dark:text-cyan-400 text-2xl">mosque</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">التربية الإسلامية</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 7-9</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪279</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪229</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪379</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        42 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,250 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-700 hover:to-blue-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Social Studies -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-amber-600 to-orange-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">public</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    الإعدادي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-amber-600 dark:text-amber-400 text-2xl">public</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">الدراسات الاجتماعية</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 7-9</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪289</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪239</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪389</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        45 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,080 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-amber-600 to-orange-700 hover:from-amber-700 hover:to-orange-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content - Secondary -->
+                <div id="secondary" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Physics -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-purple-600 to-violet-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">bolt</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    ثانوي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-purple-600 dark:text-purple-400 text-2xl">bolt</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">الفيزياء</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 10-12</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪399</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪349</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪499</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        58 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,890 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-purple-600 to-violet-700 hover:from-purple-700 hover:to-violet-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Chemistry -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-teal-600 to-cyan-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">science</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    ثانوي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-teal-600 dark:text-teal-400 text-2xl">science</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">الكيمياء</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 10-12</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪389</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪339</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪489</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        52 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,650 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-teal-600 to-cyan-700 hover:from-teal-700 hover:to-cyan-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Biology -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-green-600 to-teal-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">biotech</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    ثانوي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-green-600 dark:text-green-400 text-2xl">biotech</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">الأحياء</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 10-12</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪379</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪329</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪479</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        48 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,420 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-green-600 to-teal-700 hover:from-green-700 hover:to-teal-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Mathematics -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-blue-600 to-indigo-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">calculate</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    ثانوي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-blue-600 dark:text-blue-400 text-2xl">calculate</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">الرياضيات</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 10-12</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪419</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪369</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪519</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        65 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        2,340 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Arabic -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-emerald-600 to-teal-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">menu_book</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    ثانوي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-emerald-600 dark:text-emerald-400 text-2xl">menu_book</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">اللغة العربية</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 10-12</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪349</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪299</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪449</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        60 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        1,780 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- English -->
+                        <div class="course-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+                            <div class="h-32 bg-gradient-to-r from-rose-600 to-pink-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <span class="material-icons-round text-white/20 text-9xl absolute -bottom-4 -left-4">language</span>
+                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    ثانوي
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-rose-100 dark:bg-rose-900/30 rounded-xl flex items-center justify-center">
+                                        <span class="material-icons-round text-rose-600 dark:text-rose-400 text-2xl">language</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">اللغة الإنجليزية</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">الصفوف 10-12</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس أساسي</span>
+                                        </div>
+                                        <span class="font-bold text-primary">₪369</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس مراجعة</span>
+                                        </div>
+                                        <span class="font-bold text-secondary">₪319</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-300">كورس تكثيف</span>
+                                        </div>
+                                        <span class="font-bold text-purple-500">₪469</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">play_circle</span>
+                                        55 درس
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-icons-round text-sm">group</span>
+                                        2,120 طالب
+                                    </span>
+                                </div>
+                                <button class="w-full bg-gradient-to-r from-rose-600 to-pink-700 hover:from-rose-700 hover:to-pink-800 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                                    عرض التفاصيل
+                                    <span class="material-icons-round text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="py-16 bg-white dark:bg-surface-dark relative">
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="text-center mb-12">
+                    <div class="inline-block relative mb-4">
+                        <h2 class="text-3xl md:text-4xl font-black text-primary">
+                            <span class="text-secondary">كيفية</span> العمل
+                        </h2>
+                        <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full">
+                        </div>
+                    </div>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mt-4 max-w-xl mx-auto">
+                        ثلاث خطوات بسيطة لبدء رحلتك التعليمية
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <!-- Step 1 -->
+                    <div class="text-center">
+                        <div class="step-number mx-auto mb-6">1</div>
+                        <div class="bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/20 dark:to-primary/10 rounded-2xl p-8 card-hover">
+                            <span class="material-icons-round text-primary text-4xl mb-4">person_add</span>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">سجل واختر كورسك</h3>
+                            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                                أنشئ حسابك مجاناً واختر الكورسات المناسبة لك من بين مئات الخيارات المتاحة
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="text-center">
+                        <div class="step-number mx-auto mb-6">2</div>
+                        <div class="bg-gradient-to-br from-secondary/5 to-secondary/10 dark:from-secondary/20 dark:to-secondary/10 rounded-2xl p-8 card-hover">
+                            <span class="material-icons-round text-secondary text-4xl mb-4">play_circle</span>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">شاهد الدروس وحل الامتحانات</h3>
+                            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                                تابع الدروس التعليمية عالية الجودة وحل الامتحانات لتقييم مستواك
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="text-center">
+                        <div class="step-number mx-auto mb-6">3</div>
+                        <div class="bg-gradient-to-br from-purple-500/5 to-purple-500/10 dark:from-purple-500/20 dark:to-purple-500/10 rounded-2xl p-8 card-hover">
+                            <span class="material-icons-round text-purple-500 text-4xl mb-4">insights</span>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">تابع درجاتك وتقدمك</h3>
+                            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                                راقب أداءك من خلال تقارير مفصلة واحصل على توصيات مخصصة للتحسين
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+  
+  
+        <!-- Contact & Support Section -->
+        <section id="contact" class="py-16 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="text-center mb-12">
+                    <div class="inline-block relative mb-4">
+                        <h2 class="text-3xl md:text-4xl font-black text-primary">
+                            <span class="text-secondary">التواصل</span> والدعم
+                        </h2>
+                        <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full">
+                        </div>
+                    </div>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mt-4 max-w-xl mx-auto">
+                        نحن هنا لمساعدتك في أي وقت
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <!-- Contact Form -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">أرسل لنا رسالة</h3>
+                        <form class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">الاسم</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="أدخل اسمك">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">البريد الإلكتروني</label>
+                                <input type="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="أدخل بريدك الإلكتروني">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">الرسالة</label>
+                                <textarea rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="اكتب رسالتك هنا"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                                إرسال الرسالة
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="space-y-6">
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                                    <span class="material-icons-round text-primary">phone</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white">الهاتف</h4>
+                                    <p class="text-gray-600 dark:text-gray-400">+966 50 123 4567</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center">
+                                    <span class="material-icons-round text-secondary">email</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white">البريد الإلكتروني</h4>
+                                    <p class="text-gray-600 dark:text-gray-400">info@altafawz.com</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center">
+                                    <span class="material-icons-round text-green-500">support_agent</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white">الدعم الفني</h4>
+                                    <p class="text-gray-600 dark:text-gray-400">متاح 24/7 للرد على استفساراتك</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-12">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <!-- Logo and Description -->
+                    <div class="col-span-1 md:col-span-2">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
+                                <span class="material-icons-round text-white">school</span>
+                            </div>
+                            <span class="text-2xl font-black">منصة التفوق</span>
+                        </div>
+                        <p class="text-gray-400 leading-relaxed">
+                            منصتك التعليمية المتكاملة للمراحل الدراسية جميعها. نسعى لتقديم أفضل تجربة تعليمية للطلاب والمدرسين.
+                        </p>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div>
+                        <h4 class="font-semibold text-lg mb-4">روابط سريعة</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">الرئيسية</a></li>
+                            <li><a href="#features" class="text-gray-400 hover:text-white transition-colors">المميزات</a></li>
+                            <li><a href="#courses" class="text-gray-400 hover:text-white transition-colors">الكورسات</a></li>
+                            <li><a href="#how-it-works" class="text-gray-400 hover:text-white transition-colors">كيفية العمل</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Legal -->
+                    <div>
+                        <h4 class="font-semibold text-lg mb-4">قوانين وسياسات</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">سياسة الخصوصية</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">شروط الاستخدام</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">سياسة الاسترجاع</a></li>
+                            <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">تواصل معنا</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                    <p class="text-gray-400">
+                        © 2024 منصة التفوق. جميع الحقوق محفوظة.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Theme Toggle Button -->
+        <button class="theme-toggle fixed bottom-6 left-6 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 w-12 h-12 rounded-full flex items-center justify-center shadow-sm transition-colors hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none z-50" onclick="document.documentElement.classList.toggle('dark')">
+            <span class="material-icons-round dark:hidden">dark_mode</span>
+            <span class="material-icons-round hidden dark:block">light_mode</span>
+        </button>
+    </div>
+
+    <script>
+        // Educational Loader Functionality
+        class EducationalLoader {
+            constructor() {
+                this.loader = document.getElementById('eduLoader');
+                this.mainContent = document.getElementById('mainContent');
+                this.init();
+            }
+
+            init() {
+                setTimeout(() => {
+                    this.hideLoader();
+                }, 1500);
+            }
+
+            hideLoader() {
+                this.loader.style.opacity = '0';
+                this.loader.style.transition = 'opacity 0.5s ease';
+
+                setTimeout(() => {
+                    this.loader.style.display = 'none';
+                    this.mainContent.style.display = 'block';
+                    this.mainContent.style.opacity = '0';
+                    this.mainContent.style.transition = 'opacity 0.5s ease';
+
+                    setTimeout(() => {
+                        this.mainContent.style.opacity = '1';
+                        this.initAnimations();
+                    }, 50);
+                }, 500);
+            }
+
+            initAnimations() {
+                // Fade in animations
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                document.querySelectorAll('.fade-in').forEach(el => {
+                    observer.observe(el);
+                });
+            }
+        }
+
+        // Tab Functionality
+        class TabSystem {
+            constructor() {
+                this.tabButtons = document.querySelectorAll('.tab-btn');
+                this.tabContents = document.querySelectorAll('.tab-content');
+                this.init();
+            }
+
+            init() {
+                this.tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetTab = button.getAttribute('data-tab');
+                        this.switchTab(targetTab);
+                    });
+                });
+            }
+
+            switchTab(tabName) {
+                // Update buttons
+                this.tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-tab') === tabName) {
+                        btn.classList.add('active');
+                    }
+                });
+
+                // Update content
+                this.tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === tabName) {
+                        content.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        // Navbar scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('nav');
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Show success message
+            const button = this.querySelector('button[type="submit"]');
+            const originalText = button.textContent;
+            button.textContent = 'تم الإرسال بنجاح!';
+            button.classList.add('bg-green-500');
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('bg-green-500');
+                this.reset();
+            }, 3000);
+        });
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = new EducationalLoader();
+            const tabSystem = new TabSystem();
+        });
+
+        // Loading spinner styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .loading-spinner {
+                display: flex;
+                gap: 4px;
+            }
+
+            .spinner-circle {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #0EA5E9, #a66a1f);
+                animation: spinnerPulse 1.4s ease-in-out infinite both;
+            }
+
+            .spinner-circle:nth-child(1) {
+                animation-delay: -0.32s;
+            }
+
+            .spinner-circle:nth-child(2) {
+                animation-delay: -0.16s;
+            }
+
+            .spinner-circle:nth-child(3) {
+                animation-delay: 0;
+            }
+
+            @keyframes spinnerPulse {
+                0%, 80%, 100% {
+                    opacity: 0.3;
+                    transform: scale(0.8);
+                }
+                40% {
+                    opacity: 1;
+                    transform: scale(1.2);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+</body>
+
+</html>

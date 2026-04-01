@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>لوحة تحكم الطالب - منصة التفوق</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ["Cairo", "sans-serif"],
+                        body: ["Cairo", "sans-serif"],
+                    },
+                    colors: {
+                        primary: "#0EA5E9", // Sky Blue
+                        secondary: "#a66a1f", // Yellow
+                        "primary-dark": "#0284C7",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1E293B",
+                        "text-light": "#334155",
+                        "text-dark": "#E2E8F0",
+                        "accent-pink": "#F43F5E",
+                        "success": "#10B981",
+                        "warning": "#F59E0B",
+                        "danger": "#EF4444",
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* Responsive Sidebar */
+        .sidebar {
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                z-index: 50;
+                transform: translateX(100%);
+                width: 16rem;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-right: 0 !important;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 40;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .sidebar {
+                position: relative;
+                transform: translateX(0) !important;
+                width: 16rem;
+                flex-shrink: 0;
+            }
+
+            .main-content {
+                margin-right: 0 !important;
+                flex: 1;
+            }
+
+            .sidebar-overlay {
+                display: none !important;
+            }
+        }
+
+        /* Sidebar Items */
+        .sidebar-item {
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-item:hover {
+            background: linear-gradient(to right, rgba(14, 165, 233, 0.1), rgba(166, 106, 31, 0.1));
+            border-right: 3px solid #0EA5E9;
+        }
+
+        .sidebar-item.active {
+            background: linear-gradient(to right, rgba(14, 165, 233, 0.15), rgba(166, 106, 31, 0.15));
+            border-right: 3px solid #0EA5E9;
+        }
+
+        /* Content Pages */
+        .content-page {
+            display: none;
+        }
+
+        .content-page.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            background: linear-gradient(to right, #0EA5E9, #a66a1f);
+            height: 6px;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* Card Hover Effects */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Tab System */
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(to right, #0EA5E9, #a66a1f);
+            color: white;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+
+        .status-completed {
+            background: rgba(14, 165, 233, 0.1);
+            color: #0EA5E9;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: #F59E0B;
+        }
+
+        .status-ended {
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
+        }
+
+        .status-suspended {
+            background: rgba(107, 114, 128, 0.1);
+            color: #6B7280;
+        }
+
+        /* Mobile Specific */
+        .mobile-header {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-header {
+                display: flex;
+            }
+        }
+
+        /* Responsive Tables */
+        @media (max-width: 640px) {
+            .responsive-table {
+                font-size: 12px;
+            }
+
+            .responsive-table th,
+            .responsive-table td {
+                padding: 8px 4px;
+            }
+
+            .hide-mobile {
+                display: none;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #10B981;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 640px) {
+            .responsive-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 768px) {
+            .responsive-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+
+        /* Responsive Cards */
+        @media (max-width: 640px) {
+            .responsive-card {
+                padding: 12px !important;
+            }
+
+            .responsive-card h3 {
+                font-size: 14px !important;
+            }
+
+            .responsive-card p {
+                font-size: 12px !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+    <!-- Mobile Header -->
+    <header class="mobile-header fixed top-0 left-0 right-0 bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-700 z-30 px-4 py-3">
+        <div class="flex items-center justify-between">
+            <button id="mobileMenuBtn" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                <span class="material-icons-round text-2xl">menu</span>
+            </button>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                    <span class="material-icons-round text-white text-sm">school</span>
+                </div>
+                <span class="font-bold text-sm">منصة التفوق</span>
+            </div>
+            <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                <span class="material-icons-round text-2xl">notifications</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- Main Container -->
+    <div class="flex h-screen pt-0 md:pt-0">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar w-64 bg-white dark:bg-surface-dark border-l border-gray-200 dark:border-gray-700 h-full overflow-y-auto">
+            <div class="p-4 md:p-6">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
+                        <span class="material-icons-round text-white">school</span>
+                    </div>
+                    <span class="text-xl font-black hidden md:block">منصة التفوق</span>
+                </div>
+
+                <!-- User Info -->
+                <div class="bg-gradient-to-br from-primary/5 to-secondary/5 dark:from-primary/10 dark:to-secondary/10 rounded-xl p-3 md:p-4 mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                            <span class="material-icons-round text-white text-sm md:text-base">person</span>
+                        </div>
+                        <div class="min-w-0">
+                            <h3 class="font-semibold text-gray-900 dark:text-white text-sm md:text-base truncate">أحمد محمد</h3>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400">ثالثة إعدادي</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Menu -->
+                <nav class="space-y-2">
+                    <a href="#" class="sidebar-item active flex items-center gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-gray-700 dark:text-gray-300" data-page="home">
+                        <span class="material-icons-round text-lg md:text-xl">home</span>
+                        <span class="text-sm md:text-base">الرئيسية</span>
+                    </a>
+                    <a href="#" class="sidebar-item flex items-center gap-3 px-3 md:px-4 flex items-center gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-gray-700 dark:text-gray-300" data-page="courses">
+                        <span class="material-icons-round text-lg md:text-xl">book</span>
+                        <span class="text-sm md:text-base">كورساتي</span>
+                    </a>
+                    <a href="#" class="sidebar-item flex items-center gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-gray-700 dark:text-gray-300" data-page="content">
+                        <span class="material-icons-round text-lg md:text-xl">video_library</span>
+                        <span class="text-sm md:text-base">المحتوى التعليمي</span>
+                    </a>
+                    <a href="#" class="sidebar-item flex items-center gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-gray-700 dark:text-gray-300" data-page="exams">
+                        <span class="material-icons-round text-lg md:text-xl">assignment</span>
+                        <span class="text-sm md:text-base">امتحاناتي</span>
+                    </a>
+                    <a href="#" class="sidebar-item flex items-center gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-gray-700 dark:text-gray-300" data-page="grades">
+                        <span class="material-icons-round text-lg md:text-xl">insights</span>
+                        <span class="text-sm md:text-base">درجاتي</span>
+                    </a>
+                    <a href="#" class="sidebar-item flex items-center gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-gray-700 dark:text-gray-300" data-page="subscriptions">
+                        <span class="material-icons-round text-lg md:text-xl">subscriptions</span>
+                        <span class="text-sm md:text-base">اشتراكاتي</span>
+                    </a>
+                    <a href="#" class="sidebar-item flex items-center gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-gray-700 dark:text-gray-300" data-page="profile">
+                        <span class="material-icons-round text-lg md:text-xl">account_circle</span>
+                        <span class="text-sm md:text-base">الملف الشخصي</span>
+                    </a>
+                </nav>
+
+                <!-- Logout Button -->
+                <div class="mt-6 md:mt-8 flex items-center gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                    <span class="material-icons-round text-lg md:text-xl">logout</span>
+                    <span class="text-sm md:text-base">تسجيل خروج</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content flex-1 overflow-y-auto pt-16 md:pt-0">
+
+            <!-- Home Page -->
+            <div id="home" class="content-page active p-4 md:p-6">
+                <!-- Welcome Section -->
+                <div class="bg-gradient-to-br from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20 rounded-2xl p-4 md:p-6 mb-6">
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">مرحباً، أحمد محمد 👋</h1>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-3 md:p-4">
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-round text-primary text-lg md:text-xl">school</span>
+                                <div>
+                                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400">المرحلة الحالية</p>
+                                    <p class="font-semibold text-gray-900 dark:text-white text-sm md:text-base">ثالثة إعدادي</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-3 md:p-4">
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-round text-secondary text-lg md:text-xl">book</span>
+                                <div>
+                                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400">الكورسات المشترك</p>
+                                    <p class="font-semibold text-gray-900 dark:text-white text-sm md:text-base">4 كورسات</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-3 md:p-4">
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-round text-green-500 text-lg md:text-xl">schedule</span>
+                                <div>
+                                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400">آخر نشاط</p>
+                                    <p class="font-semibold text-gray-900 dark:text-white text-sm md:text-base">قبل يومين</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Courses Section -->
+                <section class="mb-8">
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">كورساتي المشترك فيها</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                        <!-- Course Card 1 -->
+                        <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-gray-700 responsive-card">
+                            <div class="flex items-center justify-between mb-3 md:mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white text-sm md:text-base">المراجعة الشاملة</h3>
+                                <span class="status-badge status-active text-xs">نشط</span>
+                            </div>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-3 md:mb-4">الرياضيات - أولى ثانوي</p>
+                            <div class="mb-3 md:mb-4">
+                                <div class="flex justify-between text-xs md:text-sm mb-2">
+                                    <span class="text-gray-600 dark:text-gray-400">التقدم</span>
+                                    <span class="font-semibold text-primary">60%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="progress-bar" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-3 md:mb-4">آخر درس: المعادلات التربيعية</p>
+                            <button class="w-full bg-primary hover:bg-primary-dark text-white py-2 rounded-lg font-semibold text-xs md:text-sm transition-colors">
+                                استكمال الدروس
+                            </button>
+                        </div>
+
+                        <!-- Course Card 2 -->
+                        <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-gray-700 responsive-card">
+                            <div class="flex items-center justify-between mb-3 md:mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white text-sm md:text-base">أساسيات الفيزياء</h3>
+                                <span class="status-badge status-active text-xs">نشط</span>
+                            </div>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-3 md:mb-4">الفيزياء - أولى ثانوي</p>
+                            <div class="mb-3 md:mb-4">
+                                <div class="flex justify-between text-xs md:text-sm mb-2">
+                                    <span class="text-gray-600 dark:text-gray-400">التقدم</span>
+                                    <span class="font-semibold text-primary">45%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="progress-bar" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-3 md:mb-4">آخر درس: الحركة والقوى</p>
+                            <button class="w-full bg-primary hover:bg-primary-dark text-white py-2 rounded-lg font-semibold text-xs md:text-sm transition-colors">
+                                استكمال الدروس
+                            </button>
+                        </div>
+
+                        <!-- Course Card 3 -->
+                        <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-gray-700 responsive-card">
+                            <div class="flex items-center justify-between mb-3 md:mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white text-sm md:text-base">الكيمياء العضوية</h3>
+                                <span class="status-badge status-completed text-xs">منتهي</span>
+                            </div>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-3 md:mb-4">الكيمياء - أولى ثانوي</p>
+                            <div class="mb-3 md:mb-4">
+                                <div class="flex justify-between text-xs md:text-sm mb-2">
+                                    <span class="text-gray-600 dark:text-gray-400">التقدم</span>
+                                    <span class="font-semibold text-primary">100%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="progress-bar" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-3 md:mb-4">مكتمل بالكامل</p>
+                            <button class="w-full bg-secondary hover:bg-secondary/80 text-white py-2 rounded-lg font-semibold text-xs md:text-sm transition-colors">
+                                مراجعة الدروس
+                            </button>
+                        </div>
+
+                        <!-- Course Card 4 -->
+                        <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-gray-700 responsive-card">
+                            <div class="flex items-center justify-between mb-3 md:mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white text-sm md:text-base">الأحياء الجزيئية</h3>
+                                <span class="status-badge status-active text-xs">نشط</span>
+                            </div>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-3 md:mb-4">الأحياء - أولى ثانوي</p>
+                            <div class="mb-3 md:mb-4">
+                                <div class="flex justify-between text-xs md:text-sm mb-2">
+                                    <span class="text-gray-600 dark:text-gray-400">التقدم</span>
+                                    <span class="font-semibold text-primary">30%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="progress-bar" style="width: 30%"></div>
+                                </div>
+                            </div>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-3 md:mb-4">آخر درس: الخلية الحية</p>
+                            <button class="w-full bg-primary hover:bg-primary-dark text-white py-2 rounded-lg font-semibold text-xs md:text-sm transition-colors">
+                                استكمال الدروس
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Upcoming Exams Section -->
+                <section>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">الامتحانات القادمة</h2>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full responsive-table">
+                                <thead class="bg-gray-50 dark:bg-gray-700">
+                                    <tr>
+                                        <th class="px-3 md:px-6 py-3 text-right text-xs md:text-sm font-semibold text-gray-900 dark:text-white">المادة</th>
+                                        <th class="px-3 md:px-6 py-3 text-right text-xs md:text-sm font-semibold text-gray-900 dark:text-white">التاريخ</th>
+                                        <th class="px-3 md:px-6 py-3 text-right text-xs md:text-sm font-semibold text-gray-900 dark:text-white">المدة</th>
+                                        <th class="px-3 md:px-6 py-3 text-right text-xs md:text-sm font-semibold text-gray-900 dark:text-white">الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                    <tr>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-900 dark:text-white">الرياضيات</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-600 dark:text-gray-400">2024/04/15</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-600 dark:text-gray-400">30 دقيقة</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4">
+                                            <span class="status-badge status-pending text-xs">لم يحل بعد</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-900 dark:text-white">الفيزياء</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-600 dark:text-gray-400">2024/04/18</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-600 dark:text-gray-400">45 دقيقة</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4">
+                                            <span class="status-badge status-pending text-xs">لم يحل بعد</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-900 dark:text-white">الكيمياء</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-600 dark:text-gray-400">2024/04/20</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-600 dark:text-gray-400">60 دقيقة</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4">
+                                            <span class="status-badge status-active text-xs">جاري الحل</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-900 dark:text-white">الأحياء</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-600 dark:text-gray-400">2024/04/22</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-600 dark:text-gray-400">40 دقيقة</td>
+                                        <td class="px-3 md:px-6 py-3 md:py-4">
+                                            <span class="status-badge status-completed text-xs">تم</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+                                <div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">المرحلة الحالية</p>
+                                    <p class="font-semibold text-gray-900 dark:text-white">ثالثة إعدادي</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-4">
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-round text-secondary">book</span>
+                                <div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">الكورسات المشترك</p>
+                                    <p class="font-semibold text-gray-900 dark:text-white">4 كورسات</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-4">
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-round text-green-500">schedule</span>
+                                <div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">آخر نشاط</p>
+                                    <p class="font-semibold text-gray-900 dark:text-white">قبل يومين</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Courses Section -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">كورساتي المشترك فيها</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Course Card 1 -->
+                        <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white">المراجعة الشاملة</h3>
+                                <span class="status-badge status-active">نشط</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">الرياضيات - أولى ثانوي</p>
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-gray-600 dark:text-gray-400">التقدم</span>
+                                    <span class="font-semibold text-primary">60%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="progress-bar" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">آخر درس: المعادلات التربيعية</p>
+                            <button class="w-full bg-primary hover:bg-primary-dark text-white py-2 rounded-lg font-semibold transition-colors">
+                                استكمال الدروس
+                            </button>
+                        </div>
+
+                        <!-- Course Card 2 -->
+                        <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white">أساسيات الفيزياء</h3>
+                                <span class="status-badge status-active">نشط</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">الفيزياء - أولى ثانوي</p>
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-gray-600 dark:text-gray-400">التقدم</span>
+                                    <span class="font-semibold text-primary">45%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="progress-bar" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">آخر درس: الحركة والقوى</p>
+                            <button class="w-full bg-primary hover:bg-primary-dark text-white py-2 rounded-lg font-semibold transition-colors">
+                                استكمال الدروس
+                            </button>
+                        </div>
+
+                        <!-- Course Card 3 -->
+                        <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white">الكيمياء العضوية</h3>
+                                <span class="status-badge status-completed">منتهي</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">الكيمياء - أولى ثانوي</p>
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-gray-600 dark:text-gray-400">التقدم</span>
+                                    <span class="font-semibold text-primary">100%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="progress-bar" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">مكتمل بالكامل</p>
+                            <button class="w-full bg-secondary hover:bg-secondary/80 text-white py-2 rounded-lg font-semibold transition-colors">
+                                مراجعة الدروس
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Upcoming Exams Section -->
+                <section>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">الامتحانات القادمة</h2>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">المادة</th>
+                                    <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">التاريخ</th>
+                                    <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">المدة</th>
+                                    <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">الرياضيات</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">2024/04/15</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">30 دقيقة</td>
+                                    <td class="px-6 py-4">
+                                        <span class="status-badge status-pending">لم يحل بعد</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">الفيزياء</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">2024/04/18</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">45 دقيقة</td>
+                                    <td class="px-6 py-4">
+                                        <span class="status-badge status-pending">لم يحل بعد</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">الكيمياء</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">2024/04/20</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">60 دقيقة</td>
+                                    <td class="px-6 py-4">
+                                        <span class="status-badge status-active">جاري الحل</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- My Courses Page -->
+            <div id="courses" class="content-page p-6">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">كورساتي</h1>
+
+                <!-- Search and Filter -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 mb-6 border border-gray-200 dark:border-gray-700">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">بحث عن كورس</label>
+                            <div class="relative">
+                                <input type="text" placeholder="اكتب اسم الكورس..." class="w-full pr-10 pl-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <span class="material-icons-round absolute left-3 top-2.5 text-gray-400">search</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">فلتر حسب المرحلة</label>
+                            <select class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option>جميع المراحل</option>
+                                <option>ابتدائي</option>
+                                <option>إعدادي</option>
+                                <option>ثانوي</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">فلتر حسب المادة</label>
+                            <select class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option>جميع المواد</option>
+                                <option>الرياضيات</option>
+                                <option>الفيزياء</option>
+                                <option>الكيمياء</option>
+                                <option>الأحياء</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Courses List -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 dark:bg-gray-700">
+                            <tr>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">اسم الكورس</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">المادة</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">الصف</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">عدد الدروس</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">التقدم</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">السعر</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">الحالة</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr>
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">المراجعة الشاملة</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">تاريخ الاشتراك: 1/1/2026</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">الرياضيات</td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">أولى ثانوي</td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">25 درس</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-20 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                            <div class="progress-bar" style="width: 60%"></div>
+                                        </div>
+                                        <span class="text-sm font-semibold text-primary">60%</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm font-semibold text-primary">150 جنيه</td>
+                                <td class="px-6 py-4">
+                                    <span class="status-badge status-active">نشط</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex gap-2">
+                                        <button class="text-primary hover:text-primary-dark">
+                                            <span class="material-icons-round text-sm">visibility</span>
+                                        </button>
+                                        <button class="text-green-500 hover:text-green-600">
+                                            <span class="material-icons-round text-sm">quiz</span>
+                                        </button>
+                                        <button class="text-secondary hover:text-secondary/80">
+                                            <span class="material-icons-round text-sm">refresh</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">أساسيات الفيزياء</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">تاريخ الاشتراك: 15/1/2026</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">الفيزياء</td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">أولى ثانوي</td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">30 درس</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-20 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                            <div class="progress-bar" style="width: 45%"></div>
+                                        </div>
+                                        <span class="text-sm font-semibold text-primary">45%</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm font-semibold text-primary">200 جنيه</td>
+                                <td class="px-6 py-4">
+                                    <span class="status-badge status-active">نشط</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex gap-2">
+                                        <button class="text-primary hover:text-primary-dark">
+                                            <span class="material-icons-round text-sm">visibility</span>
+                                        </button>
+                                        <button class="text-green-500 hover:text-green-600">
+                                            <span class="material-icons-round text-sm">quiz</span>
+                                        </button>
+                                        <button class="text-secondary hover:text-secondary/80">
+                                            <span class="material-icons-round text-sm">refresh</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- My Content Page -->
+            <div id="content" class="content-page p-6">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">المحتوى التعليمي</h1>
+
+                <!-- Course Tabs -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 mb-6 border border-gray-200 dark:border-gray-700">
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <button class="tab-btn active px-4 py-2 rounded-lg font-semibold">رياضيات - أساسي</button>
+                        <button class="tab-btn px-4 py-2 rounded-lg font-semibold text-gray-600 dark:text-gray-300">رياضيات - مراجعة</button>
+                        <button class="tab-btn px-4 py-2 rounded-lg font-semibold text-gray-600 dark:text-gray-300">فيزياء - أساسي</button>
+                    </div>
+
+                    <!-- Units and Lessons -->
+                    <div class="space-y-6">
+                        <!-- Unit 1 -->
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white">الوحدة 1: المعادلات التربيعية</h3>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">5 دروس</span>
+                                    <span class="text-sm font-semibold text-primary">80% مكتملة</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4">
+                                <div class="progress-bar" style="width: 80%"></div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-icons-round text-green-500">check_circle</span>
+                                        <div>
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">حل المعادلات التربيعية</p>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400">15 دقيقة</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="text-primary hover:text-primary-dark">
+                                            <span class="material-icons-round text-sm">play_circle</span>
+                                        </button>
+                                        <button class="text-gray-600 hover:text-gray-800">
+                                            <span class="material-icons-round text-sm">download</span>
+                                        </button>
+                                        <button class="text-secondary hover:text-secondary/80">
+                                            <span class="material-icons-round text-sm">note_add</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-icons-round text-green-500">check_circle</span>
+                                        <div>
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">المميزات والخصائص</p>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400">12 دقيقة</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="text-primary hover:text-primary-dark">
+                                            <span class="material-icons-round text-sm">play_circle</span>
+                                        </button>
+                                        <button class="text-gray-600 hover:text-gray-800">
+                                            <span class="material-icons-round text-sm">download</span>
+                                        </button>
+                                        <button class="text-secondary hover:text-secondary/80">
+                                            <span class="material-icons-round text-sm">note_add</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-icons-round text-gray-400">radio_button_unchecked</span>
+                                        <div>
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">التطبيقات العملية</p>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400">18 دقيقة</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="text-primary hover:text-primary-dark">
+                                            <span class="material-icons-round text-sm">play_circle</span>
+                                        </button>
+                                        <button class="text-gray-600 hover:text-gray-800">
+                                            <span class="material-icons-round text-sm">download</span>
+                                        </button>
+                                        <button class="text-secondary hover:text-secondary/80">
+                                            <span class="material-icons-round text-sm">note_add</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Unit 2 -->
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white">الوحدة 2: الدوال والرسوم البيانية</h3>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">6 دروس</span>
+                                    <span class="text-sm font-semibold text-primary">45% مكتملة</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4">
+                                <div class="progress-bar" style="width: 45%"></div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-icons-round text-green-500">check_circle</span>
+                                        <div>
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">مقدمة في الدوال</p>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400">20 دقيقة</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="text-primary hover:text-primary-dark">
+                                            <span class="material-icons-round text-sm">play_circle</span>
+                                        </button>
+                                        <button class="text-gray-600 hover:text-gray-800">
+                                            <span class="material-icons-round text-sm">download</span>
+                                        </button>
+                                        <button class="text-secondary hover:text-secondary/80">
+                                            <span class="material-icons-round text-sm">note_add</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Exams Page -->
+            <div id="exams" class="content-page p-6">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">امتحاناتي</h1>
+
+                <!-- Available Exams -->
+                <section class="mb-8">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">الامتحانات المتاحة</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white">اختبار شهري - المعادلات</h3>
+                                <span class="material-icons-round text-primary">quiz</span>
+                            </div>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600 dark:text-gray-400">المادة</span>
+                                    <span class="font-semibold text-gray-900 dark:text-white">الرياضيات</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600 dark:text-gray-400">عدد الأسئلة</span>
+                                    <span class="font-semibold text-gray-900 dark:text-white">10 أسئلة</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600 dark:text-gray-400">المدة</span>
+                                    <span class="font-semibold text-gray-900 dark:text-white">30 دقيقة</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600 dark:text-gray-400">الدرجة الكلية</span>
+                                    <span class="font-semibold text-primary">100 درجة</span>
+                                </div>
+                            </div>
+                            <button class="w-full bg-primary hover:bg-primary-dark text-white py-2 rounded-lg font-semibold transition-colors">
+                                بدء الامتحان
+                            </button>
+                        </div>
+
+                        <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white">اختبار الفصل الأول</h3>
+                                <span class="material-icons-round text-secondary">quiz</span>
+                            </div>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600 dark:text-gray-400">المادة</span>
+                                    <span class="font-semibold text-gray-900 dark:text-white">الفيزياء</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600 dark:text-gray-400">عدد الأسئلة</span>
+                                    <span class="font-semibold text-gray-900 dark:text-white">15 سؤال</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600 dark:text-gray-400">المدة</span>
+                                    <span class="font-semibold text-gray-900 dark:text-white">45 دقيقة</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600 dark:text-gray-400">الدرجة الكلية</span>
+                                    <span class="font-semibold text-primary">150 درجة</span>
+                                </div>
+                            </div>
+                            <button class="w-full bg-primary hover:bg-primary-dark text-white py-2 rounded-lg font-semibold transition-colors">
+                                بدء الامتحان
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Completed Exams -->
+                <section>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">النتائج السابقة</h2>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">اسم الامتحان</th>
+                                    <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">المادة</th>
+                                    <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">التاريخ</th>
+                                    <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">الدرجة</th>
+                                    <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">النسبة</th>
+                                    <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">التفاصيل</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">اختبار المعادلات التربيعية</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">الرياضيات</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">2024/03/15</td>
+                                    <td class="px-6 py-4 text-sm font-semibold text-primary">85/100</td>
+                                    <td class="px-6 py-4 text-sm font-semibold text-primary">85%</td>
+                                    <td class="px-6 py-4">
+                                        <button class="text-primary hover:text-primary-dark">
+                                            <span class="material-icons-round text-sm">visibility</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">اختبار الحركة والقوى</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">الفيزياء</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">2024/03/10</td>
+                                    <td class="px-6 py-4 text-sm font-semibold text-primary">72/100</td>
+                                    <td class="px-6 py-4 text-sm font-semibold text-primary">72%</td>
+                                    <td class="px-6 py-4">
+                                        <button class="text-primary hover:text-primary-dark">
+                                            <span class="material-icons-round text-sm">visibility</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- My Grades Page -->
+            <div id="grades" class="content-page p-6">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">درجاتي</h1>
+
+                <!-- Performance Summary -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 dark:text-gray-400">متوسط الدرجات</span>
+                            <span class="material-icons-round text-primary">trending_up</span>
+                        </div>
+                        <p class="text-2xl font-bold text-primary">85%</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 dark:text-gray-400">أعلى درجة</span>
+                            <span class="material-icons-round text-green-500">emoji_events</span>
+                        </div>
+                        <p class="text-2xl font-bold text-green-500">95%</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">الرياضيات</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 dark:text-gray-400">أقل درجة</span>
+                            <span class="material-icons-round text-warning">warning</span>
+                        </div>
+                        <p class="text-2xl font-bold text-warning">75%</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">الكيمياء</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 dark:text-gray-400">عدد الامتحانات</span>
+                            <span class="material-icons-round text-secondary">assignment</span>
+                        </div>
+                        <p class="text-2xl font-bold text-secondary">12</p>
+                    </div>
+                </div>
+
+                <!-- Grades Details -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 dark:bg-gray-700">
+                            <tr>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">المادة</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">تاريخ الامتحان</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">الدرجة</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">النسبة المئوية</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">الزمن المستغرق</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">عرض التفاصيل</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">الرياضيات</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">2024/03/15</td>
+                                <td class="px-6 py-4 text-sm font-semibold text-primary">85/100</td>
+                                <td class="px-6 py-4 text-sm font-semibold text-primary">85%</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">25 دقيقة</td>
+                                <td class="px-6 py-4">
+                                    <button class="text-primary hover:text-primary-dark">
+                                        <span class="material-icons-round text-sm">visibility</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">الفيزياء</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">2024/03/10</td>
+                                <td class="px-6 py-4 text-sm font-semibold text-primary">72/100</td>
+                                <td class="px-6 py-4 text-sm font-semibold text-primary">72%</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">40 دقيقة</td>
+                                <td class="px-6 py-4">
+                                    <button class="text-primary hover:text-primary-dark">
+                                        <span class="material-icons-round text-sm">visibility</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">الكيمياء</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">2024/03/05</td>
+                                <td class="px-6 py-4 text-sm font-semibold text-warning">75/100</td>
+                                <td class="px-6 py-4 text-sm font-semibold text-warning">75%</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">35 دقيقة</td>
+                                <td class="px-6 py-4">
+                                    <button class="text-primary hover:text-primary-dark">
+                                        <span class="material-icons-round text-sm">visibility</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- My Subscriptions Page -->
+            <div id="subscriptions" class="content-page p-6">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">اشتراكاتي</h1>
+
+                <!-- Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 dark:text-gray-400">الاشتراكات النشطة</span>
+                            <span class="material-icons-round text-success">subscriptions</span>
+                        </div>
+                        <p class="text-2xl font-bold text-success">3 اشتراكات</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 dark:text-gray-400">إجمالي المصروفات</span>
+                            <span class="material-icons-round text-primary">payments</span>
+                        </div>
+                        <p class="text-2xl font-bold text-primary">450 جنيه</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">هذا الشهر</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 dark:text-gray-400">الاشتراكات المنتهية</span>
+                            <span class="material-icons-round text-gray-500">history</span>
+                        </div>
+                        <p class="text-2xl font-bold text-gray-500">1 اشتراك</p>
+                    </div>
+                </div>
+
+                <!-- Subscriptions Details -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 dark:bg-gray-700">
+                            <tr>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">اسم الكورس</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">المادة</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">السعر</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">تاريخ البدء</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">تاريخ الانتهاء</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">الحالة</th>
+                                <th class="px-6 py-3 text-right text-sm font-semibold text-gray-900 dark:text-white">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">المراجعة الشاملة</td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">الرياضيات</td>
+                                <td class="px-6 py-4 text-sm font-semibold text-primary">150 جنيه</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">1/1/2026</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">1/4/2026</td>
+                                <td class="px-6 py-4">
+                                    <span class="status-badge status-active">نشط</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex gap-2">
+                                        <button class="text-primary hover:text-primary-dark">
+                                            <span class="material-icons-round text-sm">refresh</span>
+                                        </button>
+                                        <button class="text-red-500 hover:text-red-600">
+                                            <span class="material-icons-round text-sm">cancel</span>
+                                        </button>
+                                        <button class="text-gray-600 hover:text-gray-800">
+                                            <span class="material-icons-round text-sm">receipt</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Subscription Management -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">إدارة الاشتراكات</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <div>
+                                <p class="font-semibold text-gray-900 dark:text-white">التجديد التلقائي</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">تجديد الاشتراكات تلقائياً عند انتهائها</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <div>
+                                <p class="font-semibold text-gray-900 dark:text-white">طرق الدفع</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">إدارة بطاقات الدفع والحسابات البنكية</p>
+                            </div>
+                            <button class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                                إدارة
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <div>
+                                <p class="font-semibold text-gray-900 dark:text-white">الفواتير</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">عرض وتحميل الفواتير السابقة</p>
+                            </div>
+                            <button class="bg-secondary hover:bg-secondary/80 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                                عرض الفواتير
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profile" class="content-page p-6">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">الملف الشخصي</h1>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Basic Information -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 mb-6">
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">معلومات أساسية</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">الاسم</label>
+                                    <input type="text" value="أحمد محمد" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">البريد الإلكتروني</label>
+                                    <input type="email" value="ahmed@email.com" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">رقم الهاتف</label>
+                                    <input type="tel" value="01234567890" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">المرحلة الدراسية</label>
+                                    <select class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option>ثالثة إعدادي</option>
+                                        <option>أولى ثانوي</option>
+                                        <option>ثانية ثانوي</option>
+                                        <option>ثالثة ثانوي</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">تاريخ التسجيل</label>
+                                <input type="text" value="1/1/2026" disabled class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-400">
+                            </div>
+                            <button class="mt-4 bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                                حفظ التغييرات
+                            </button>
+                        </div>
+
+                        <!-- Account Settings -->
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">إعدادات الحساب</h2>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div>
+                                        <p class="font-semibold text-gray-900 dark:text-white">تغيير كلمة المرور</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">تحديث كلمة المرور الخاصة بك</p>
+                                    </div>
+                                    <button class="text-primary hover:text-primary-dark">
+                                        <span class="material-icons-round">arrow_back</span>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div>
+                                        <p class="font-semibold text-gray-900 dark:text-white">إعدادات الإشعارات</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">تحديد الإشعارات التي تريد استقبالها</p>
+                                    </div>
+                                    <button class="text-primary hover:text-primary-dark">
+                                        <span class="material-icons-round">arrow_back</span>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div>
+                                        <p class="font-semibold text-gray-900 dark:text-white">الخصوصية والأمان</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">إعدادات الخصوصية وحماية الحساب</p>
+                                    </div>
+                                    <button class="text-primary hover:text-primary-dark">
+                                        <span class="material-icons-round">arrow_back</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Picture -->
+                    <div>
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">الصورة الشخصية</h2>
+                            <div class="text-center">
+                                <div class="w-32 h-32 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-icons-round text-white text-4xl">person</span>
+                                </div>
+                                <button class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg font-semibold transition-colors mb-2">
+                                    تغيير الصورة
+                                </button>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">PNG, JPG حتى 2MB</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Page Navigation
+        class DashboardNavigation {
+            constructor() {
+                this.sidebarItems = document.querySelectorAll('.sidebar-item');
+                this.contentPages = document.querySelectorAll('.content-page');
+                this.mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                this.sidebar = document.querySelector('.sidebar');
+                this.init();
+            }
+
+            init() {
+                // Sidebar navigation
+                this.sidebarItems.forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetPage = item.getAttribute('data-page');
+                        this.switchPage(targetPage);
+                        this.updateActiveItem(item);
+                        
+                        // Close mobile menu after navigation
+                        if (window.innerWidth < 768) {
+                            this.sidebar.classList.remove('open');
+                        }
+                    });
+                });
+
+                // Mobile menu toggle
+                if (this.mobileMenuBtn) {
+                    this.mobileMenuBtn.addEventListener('click', () => {
+                        this.sidebar.classList.toggle('open');
+                    });
+                }
+
+                // Tab functionality
+                this.initTabs();
+            }
+
+            switchPage(pageId) {
+                this.contentPages.forEach(page => {
+                    page.classList.remove('active');
+                });
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                }
+            }
+
+            updateActiveItem(activeItem) {
+                this.sidebarItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+                activeItem.classList.add('active');
+            }
+
+            initTabs() {
+                const tabButtons = document.querySelectorAll('.tab-btn');
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remove active class from all tabs in the same container
+                        const container = button.parentElement;
+                        container.querySelectorAll('.tab-btn').forEach(tab => {
+                            tab.classList.remove('active');
+                        });
+                        button.classList.add('active');
+                    });
+                });
+            }
+        }
+
+        // Form handling
+        class FormHandler {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                // Handle form submissions
+                const forms = document.querySelectorAll('form');
+                forms.forEach(form => {
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.showSuccessMessage('تم حفظ التغييرات بنجاح!');
+                    });
+                });
+
+                // Handle buttons
+                const buttons = document.querySelectorAll('button');
+                buttons.forEach(button => {
+                    if (button.textContent.includes('حفظ')) {
+                        button.addEventListener('click', () => {
+                            this.showSuccessMessage('تم حفظ التغييرات بنجاح!');
+                        });
+                    }
+                });
+            }
+
+            showSuccessMessage(message) {
+                // Create toast notification
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-4 left-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse-slow';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            }
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            new DashboardNavigation();
+            new FormHandler();
+
+            // Add smooth transitions
+            document.querySelectorAll('.card-hover').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                document.querySelector('.sidebar').classList.remove('open');
+            }
+        });
+    </script>
+</body>
+
+</html>

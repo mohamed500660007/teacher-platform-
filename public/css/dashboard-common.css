@@ -1,0 +1,262 @@
+/* Shared/Common Dashboard Styles */
+body {
+    font-family: 'Cairo', sans-serif;
+}
+
+/* Responsive Sidebar */
+.sidebar {
+    transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        z-index: 50;
+        transform: translateX(100%);
+        width: 16rem;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-right: 0 !important;
+    }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 40;
+    }
+
+    .sidebar-overlay.show {
+        display: block;
+    }
+}
+
+@media (min-width: 769px) {
+    .sidebar {
+        position: relative;
+        transform: translateX(0) !important;
+        width: 16rem;
+        flex-shrink: 0;
+    }
+
+    .main-content {
+        margin-right: 0 !important;
+        flex: 1;
+    }
+
+    .sidebar-overlay {
+        display: none !important;
+    }
+}
+
+/* Sidebar Items */
+.sidebar-item {
+    transition: all 0.3s ease;
+}
+
+.sidebar-item:hover {
+    background: linear-gradient(to right, rgba(14, 165, 233, 0.1), rgba(166, 106, 31, 0.1));
+    border-right: 3px solid #0EA5E9;
+}
+
+.sidebar-item.active {
+    background: linear-gradient(to right, rgba(14, 165, 233, 0.15), rgba(166, 106, 31, 0.15));
+    border-right: 3px solid #0EA5E9;
+}
+
+/* Content Pages */
+.content-page {
+    display: none;
+}
+
+.content-page.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Progress Bar */
+.progress-bar {
+    background: linear-gradient(to right, #0EA5E9, #a66a1f);
+    height: 6px;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+/* Card Hover Effects */
+.card-hover, .stat-card, .course-card {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover, .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.course-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Status Badge */
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-active {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+}
+
+.status-completed {
+    background: rgba(14, 165, 233, 0.1);
+    color: #0EA5E9;
+}
+
+.status-pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #F59E0B;
+}
+
+.status-ended {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+
+.status-draft {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6B7280;
+}
+
+.status-inactive {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+
+/* Mobile Specific */
+.mobile-header {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-header {
+        display: flex;
+    }
+}
+
+.mobile-menu-btn {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: flex;
+    }
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: #10B981;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Tables */
+@media (max-width: 640px) {
+    .responsive-table {
+        font-size: 12px;
+    }
+
+    .responsive-table th,
+    .responsive-table td {
+        padding: 8px 4px;
+    }
+
+    .hide-mobile {
+        display: none;
+    }
+}
+
+/* Responsive Grid */
+@media (max-width: 640px) {
+    .responsive-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+    .responsive-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* Responsive Cards */
+@media (max-width: 640px) {
+    .responsive-card {
+        padding: 12px !important;
+    }
+
+    .responsive-card h3 {
+        font-size: 14px !important;
+    }
+
+    .responsive-card p {
+        font-size: 12px !important;
+    }
+}
+
+/* Progress Bar Animation */
+.progress-bar {
+    animation: progressAnimation 2s ease-in-out;
+}
+
+@keyframes progressAnimation {
+    from { width: 0; }
+}
+
+/* Tab System */
+.tab-btn {
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    background: linear-gradient(to right, #0EA5E9, #a66a1f);
+    color: white;
+}

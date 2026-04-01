@@ -1,0 +1,101 @@
+/* Authentication Pages Styles (Login & Register) */
+body {
+    font-family: 'Cairo', sans-serif;
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+.input-field {
+    transition: all 0.3s ease;
+}
+
+.input-field:focus {
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+}
+
+/* Role Selection (Login Page) */
+.role-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.role-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+}
+
+.role-card.selected {
+    border-color: #0EA5E9;
+    background-color: rgba(14, 165, 233, 0.05);
+}
+
+.role-card.selected .role-icon {
+    color: #0EA5E9;
+}
+
+/* Form Validation */
+input:invalid {
+    border-color: #EF4444;
+}
+
+input:valid {
+    border-color: #10B981;
+}
+
+/* Password Toggle Animation */
+button[type="button"] {
+    transition: all 0.2s ease;
+}
+
+button[type="button"]:hover {
+    transform: scale(1.1);
+}
+
+/* Checkbox Custom Styling */
+input[type="checkbox"]:checked {
+    background-color: #0EA5E9;
+    border-color: #0EA5E9;
+}
+
+/* Loading State */
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Form Submission Button */
+button[type="submit"]:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Link Hover Effects */
+a {
+    transition: color 0.2s ease;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+    .glass-effect {
+        padding: 1.5rem;
+    }
+    
+    .input-field {
+        font-size: 14px;
+    }
+}

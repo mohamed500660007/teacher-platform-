@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>صفحة غير موجودة - منصة التفوق</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ["Cairo", "sans-serif"],
+                        body: ["Cairo", "sans-serif"],
+                    },
+                    colors: {
+                        primary: "#0EA5E9", // Sky Blue
+                        secondary: "#a66a1f", // Yellow
+                        "primary-dark": "#0284C7",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1E293B",
+                        "text-light": "#334155",
+                        "text-dark": "#E2E8F0",
+                        "accent-pink": "#F43F5E",
+                        "success": "#10B981",
+                        "warning": "#F59E0B",
+                        "danger": "#EF4444",
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Floating Animation */
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Pulse Animation */
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Card Hover */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Button Animation */
+        .btn-animation {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-animation::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-animation:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Search Input Animation */
+        .search-input {
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 640px) {
+            .responsive-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 768px) {
+            .responsive-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark min-h-screen">
+    <!-- Navigation Header -->
+    <header class="bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
+                        <span class="material-icons-round text-white">school</span>
+                    </div>
+                    <span class="text-xl font-black text-gray-900 dark:text-white">منصة التفوق</span>
+                </div>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="landing-page.html" class="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                        <span class="material-icons-round text-sm ml-1">home</span>
+                        الرئيسية
+                    </a>
+                    <a href="student-dashboard.html" class="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                        <span class="material-icons-round text-sm ml-1">person</span>
+                        لوحة الطالب
+                    </a>
+                    <a href="teacher-dashboard.html" class="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                        <span class="material-icons-round text-sm ml-1">school</span>
+                        لوحة المدرس
+                    </a>
+                </nav>
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <span class="material-icons-round text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden">
+        <div class="bg-white dark:bg-surface-dark w-64 h-full p-6">
+            <div class="flex items-center justify-between mb-6">
+                <span class="text-xl font-black text-gray-900 dark:text-white">القائمة</span>
+                <button id="closeMobileMenu" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <span class="material-icons-round text-2xl">close</span>
+                </button>
+            </div>
+            <nav class="space-y-4">
+                <a href="landing-page.html" class="flex items-center gap-3 text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <span class="material-icons-round">home</span>
+                    الرئيسية
+                </a>
+                <a href="student-dashboard.html" class="flex items-center gap-3 text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <span class="material-icons-round">person</span>
+                    لوحة الطالب
+                </a>
+                <a href="teacher-dashboard.html" class="flex items-center gap-3 text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
+                    <span class="material-icons-round">school</span>
+                    لوحة المدرس
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="container mx-auto max-w-4xl">
+            <!-- 404 Illustration Section -->
+            <div class="text-center mb-12">
+                <div class="relative inline-block mb-8">
+                    <div class="animated-bg w-48 h-48 md:w-64 md:h-64 rounded-full flex items-center justify-center float-animation">
+                        <span class="material-icons-round text-white text-6xl md:text-8xl">error_outline</span>
+                    </div>
+                    <div class="absolute -top-4 -right-4 w-16 h-16 bg-warning rounded-full flex items-center justify-center pulse-animation">
+                        <span class="material-icons-round text-white text-2xl">search_off</span>
+                    </div>
+                </div>
+                
+                <h1 class="text-4xl md:text-6xl font-bold gradient-text mb-4">404</h1>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">صفحة غير موجودة!</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+                    عذراً، الصفحة التي تبحث عنها غير موجودة أو قد تم نقلها أو حذفها. 
+                    يرجى التحقق من الرابط أو استخدام البحث للعثور على ما تبحث عنه.
+                </p>
+            </div>
+
+            <!-- Search Section -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 md:p-8 shadow-card mb-8">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 text-center">ابحث عن ما تبحث عنه</h3>
+                <div class="relative max-w-2xl mx-auto">
+                    <input 
+                        type="text" 
+                        placeholder="اكتب ما تبحث عنه..." 
+                        class="search-input w-full pr-12 pl-4 py-4 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
+                    >
+                    <button class="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary hover:text-primary-dark">
+                        <span class="material-icons-round text-2xl">search</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="mb-12">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 text-center">روابط سريعة</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 responsive-grid">
+                    <a href="landing-page.html" class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 text-center group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-icons-round text-white text-2xl">home</span>
+                        </div>
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">الصفحة الرئيسية</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">العودة إلى الصفحة الرئيسية</p>
+                    </a>
+
+                    <a href="student-dashboard.html" class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 text-center group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-success to-primary rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-icons-round text-white text-2xl">person</span>
+                        </div>
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">لوحة تحكم الطالب</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">الدخول إلى لوحة الطالب</p>
+                    </a>
+
+                    <a href="teacher-dashboard.html" class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 text-center group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-secondary to-warning rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-icons-round text-white text-2xl">school</span>
+                        </div>
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">لوحة تحكم المدرس</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">الدخول إلى لوحة المدرس</p>
+                    </a>
+
+                    <a href="#" class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 text-center group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-danger to-pink rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-icons-round text-white text-2xl">book</span>
+                        </div>
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">الكورسات</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">استعرض جميع الكورسات</p>
+                    </a>
+
+                    <a href="#" class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 text-center group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-warning to-orange rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-icons-round text-white text-2xl">assignment</span>
+                        </div>
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">الامتحانات</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">الامتحانات والاختبارات</p>
+                    </a>
+
+                    <a href="#" class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 text-center group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple to-indigo rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-icons-round text-white text-2xl">support_agent</span>
+                        </div>
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">الدعم الفني</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">تواصل مع الدعم الفني</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center space-y-4">
+                <button onclick="history.back()" class="btn-animation bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-8 py-3 rounded-xl font-semibold transition-all">
+                    <span class="material-icons-round text-sm ml-2">arrow_back</span>
+                    العودة للخلف
+                </button>
+                <div class="pt-4">
+                    <p class="text-gray-600 dark:text-gray-400">
+                        إذا كنت تعتقد أن هناك خطأ، 
+                        <a href="#" class="text-primary hover:text-primary-dark font-semibold">تواصل مع الدعم الفني</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <span class="material-icons-round text-white text-sm">school</span>
+                    </div>
+                    <span class="font-bold text-gray-900 dark:text-white">منصة التفوق</span>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                    منصة تعليمية متكاملة للطلاب والمدرسين
+                </p>
+                <div class="flex items-center justify-center gap-6 text-sm text-gray-600 dark:text-gray-400">
+                    <a href="#" class="hover:text-primary transition-colors">سياسة الخصوصية</a>
+                    <span>•</span>
+                    <a href="#" class="hover:text-primary transition-colors">شروط الاستخدام</a>
+                    <span>•</span>
+                    <a href="#" class="hover:text-primary transition-colors">الدعم الفني</a>
+                </div>
+                <p class="text-gray-500 dark:text-gray-500 text-xs mt-4">
+                    © 2026 منصة التفوق. جميع الحقوق محفوظة.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+        mobileMenuBtn?.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+        });
+
+        closeMobileMenu?.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+
+        mobileMenu?.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Search Functionality
+        const searchInput = document.querySelector('.search-input');
+        searchInput?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const searchTerm = e.target.value.trim();
+                if (searchTerm) {
+                    // Redirect to search results page
+                    window.location.href = `search.html?q=${encodeURIComponent(searchTerm)}`;
+                }
+            }
+        });
+
+        // Add animation effects on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe cards for animation
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Dynamic 404 message based on URL
+        const currentPath = window.location.pathname;
+        const notFoundElement = document.querySelector('.gradient-text');
+        
+        if (currentPath.includes('exam') || currentPath.includes('exame')) {
+            notFoundElement.textContent = 'امتحان غير موجود!';
+            document.querySelector('h2').textContent = 'الامتحان الذي تبحث عنه غير موجود!';
+        } else if (currentPath.includes('course')) {
+            notFoundElement.textContent = 'كورس غير موجود!';
+            document.querySelector('h2').textContent = 'الكورس الذي تبحث عنه غير موجود!';
+        } else if (currentPath.includes('student')) {
+            notFoundElement.textContent = 'طالب غير موجود!';
+            document.querySelector('h2').textContent = 'الطالب الذي تبحث عنه غير موجود!';
+        } else if (currentPath.includes('teacher')) {
+            notFoundElement.textContent = 'مدرس غير موجود!';
+            document.querySelector('h2').textContent = 'المدرس الذي تبحث عنه غير موجود!';
+        }
+
+        // Auto-redirect after 30 seconds
+        let countdown = 30;
+        const countdownElement = document.createElement('div');
+        countdownElement.className = 'text-center text-gray-500 dark:text-gray-400 text-sm mt-4';
+        countdownElement.innerHTML = `سيتم إعادة توجيهك تلقائياً بعد <span class="font-bold text-primary">${countdown}</span> ثانية`;
+        document.querySelector('.text-center.space-y-4').appendChild(countdownElement);
+
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            countdownElement.querySelector('span').textContent = countdown;
+            
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                window.location.href = 'landing-page.html';
+            }
+        }, 1000);
+
+        // Cancel auto-redirect on user interaction
+        ['click', 'keydown', 'scroll', 'mousemove'].forEach(event => {
+            document.addEventListener(event, () => {
+                if (countdown > 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.innerHTML = 'تم إلغاء الإعادة التلقائية';
+                }
+            }, { once: true });
+        });
+    </script>
+</body>
+
+</html>

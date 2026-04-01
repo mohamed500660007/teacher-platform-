@@ -1,0 +1,6 @@
+Prompt:
+
+take this files (student dashboard, teacher dashboard, admin dashboard) and convert them to blade files 
+ make routes for each of them 
+ 1. seprate style for each of them in separate css file 
+ 2. create dirs (student and teacher and admin) and put the blade files in it
